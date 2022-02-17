@@ -60,14 +60,15 @@ export const Header: VFC = () => {
       <Flex
         as="nav"
         bg="white"
-        color="#3F3F3F"
         fontWeight="bold"
         align="center"
         justify="space-between"
         height="80px"
         width="100%"
+        minWidth="800px"
         px="80px"
         position="fixed"
+        zIndex="100"
       >
         <Flex align="center" as="a" _hover={{ cursor: "pointer" }}>
           <Image width="140px" src={headerLogo} alt="HeaderLogo" />
