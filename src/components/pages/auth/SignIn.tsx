@@ -112,10 +112,10 @@ export const SignIn: VFC = memo(() => {
                   />
                   <Input
                     placeholder="パスワード"
-                    value={value.email}
+                    value={value.password}
                     onChange={(e) => handleChange(e)}
-                    type="email"
-                    name="email"
+                    type="password"
+                    name="password"
                     variant="flushed"
                     focusBorderColor="#47789F"
                   />
@@ -127,7 +127,7 @@ export const SignIn: VFC = memo(() => {
                         _hover={{ opacity: 0.8 }}
                         onClick={(e) => handleSubmit(e)}
                       >
-                        新規登録
+                        ログイン
                       </Button>
                       <Button border="3px solid #47789F" color="#47789F">
                         リセット
