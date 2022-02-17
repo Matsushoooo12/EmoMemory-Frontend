@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 import { User } from "./types/user";
@@ -64,17 +64,19 @@ function App() {
         <BrowserRouter>
           <Switch>
             <HeaderLayout>
-              <Route exact path="/signup">
-                <SignUp />
-              </Route>
-              <Route exact path="/signin">
-                <SignIn />
-              </Route>
-              <Private>
-                <Route exact path="/">
-                  <Home />
+              <Box pt="80px">
+                <Route exact path="/signup">
+                  <SignUp />
                 </Route>
-              </Private>
+                <Route exact path="/signin">
+                  <SignIn />
+                </Route>
+                <Private>
+                  <Route exact path="/">
+                    <Home />
+                  </Route>
+                </Private>
+              </Box>
             </HeaderLayout>
           </Switch>
         </BrowserRouter>
