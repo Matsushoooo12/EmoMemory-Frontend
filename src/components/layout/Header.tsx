@@ -65,7 +65,9 @@ export const Header: VFC = () => {
         align="center"
         justify="space-between"
         height="80px"
+        width="100%"
         px="80px"
+        position="fixed"
       >
         <Flex align="center" as="a" _hover={{ cursor: "pointer" }}>
           <Image width="140px" src={headerLogo} alt="HeaderLogo" />
