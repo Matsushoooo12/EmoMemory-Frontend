@@ -7,6 +7,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { SignIn } from "./components/pages/auth/SignIn";
 import { SignUp } from "./components/pages/auth/SignUp";
 import { Home } from "./components/pages/Home";
+import theme from "./theme/theme";
 
 export const AuthContext = createContext({});
 
@@ -48,7 +49,7 @@ function App() {
     }
   };
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <AuthContext.Provider
         value={{
           loading,
