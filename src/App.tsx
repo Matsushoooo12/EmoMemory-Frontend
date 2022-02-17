@@ -1,12 +1,14 @@
 import { createContext, useEffect, useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
-import "./App.css";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+
 import { User } from "./types/user";
 import { getCurrentUser } from "./api/auth";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { SignIn } from "./components/pages/auth/SignIn";
 import { SignUp } from "./components/pages/auth/SignUp";
 import { Home } from "./components/pages/Home";
+import theme from "./theme/theme";
+import { HeaderLayout } from "./components/templates/HeaderLayout";
 
 export const AuthContext = createContext({});
 
@@ -48,7 +50,7 @@ function App() {
     }
   };
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <AuthContext.Provider
         value={{
           loading,
@@ -61,17 +63,19 @@ function App() {
       >
         <BrowserRouter>
           <Switch>
-            <Route exact path="/signup">
-              <SignUp />
-            </Route>
-            <Route exact path="/signin">
-              <SignIn />
-            </Route>
-            <Private>
-              <Route exact path="/">
-                <Home />
+            <HeaderLayout>
+              <Route exact path="/signup">
+                <SignUp />
               </Route>
-            </Private>
+              <Route exact path="/signin">
+                <SignIn />
+              </Route>
+              <Private>
+                <Route exact path="/">
+                  <Home />
+                </Route>
+              </Private>
+            </HeaderLayout>
           </Switch>
         </BrowserRouter>
       </AuthContext.Provider>
