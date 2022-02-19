@@ -36,3 +36,39 @@
     transform: rotate(360deg);
   }
 }
+
+.textarea.note.happy {
+  background: linear-gradient(to top, #999 1px, #fff7d4 1px);
+  line-height: 30px;
+  background-size: 100% 30px;
+  background-origin: content-box;
+  background-attachment: local;
+  border: 0;
+}
+
+.textarea.note.anger {
+  background: linear-gradient(to top, #999 1px, #ffd6d7 1px);
+  line-height: 30px;
+  background-size: 100% 30px;
+  background-origin: content-box;
+  background-attachment: local;
+  border: 0;
+}
+
+.textarea.note.sorrow {
+  background: linear-gradient(to top, #999 1px, #dce3ff 1px);
+  line-height: 30px;
+  background-size: 100% 30px;
+  background-origin: content-box;
+  background-attachment: local;
+  border: 0;
+}
+
+.textarea.note.fun {
+  background: linear-gradient(to top, #999 1px, #e2ffeb 1px);
+  line-height: 30px;
+  background-size: 100% 30px;
+  background-origin: content-box;
+  background-attachment: local;
+  border: 0;
+}
