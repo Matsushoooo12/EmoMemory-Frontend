@@ -6,7 +6,7 @@ import { User } from "./types/user";
 import { getCurrentUser } from "./api/auth";
 import { SignIn } from "./components/pages/auth/SignIn";
 import { SignUp } from "./components/pages/auth/SignUp";
-import { Home } from "./components/pages/Home";
+import { Home } from "./components/pages/post/Home";
 import theme from "./theme/theme";
 import { HeaderLayout } from "./components/templates/HeaderLayout";
 
