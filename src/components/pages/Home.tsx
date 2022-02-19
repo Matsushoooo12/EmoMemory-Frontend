@@ -136,6 +136,7 @@ export const Home: VFC = () => {
                   onChange={handleEmotionChange}
                 />
                 <Textarea
+                  resize="none"
                   variant="unstyled"
                   className="textarea note happy"
                   width="60%"
@@ -185,6 +186,7 @@ export const Home: VFC = () => {
                   onChange={handleEmotionChange}
                 />
                 <Textarea
+                  resize="none"
                   variant="unstyled"
                   className="textarea note anger"
                   width="60%"
@@ -234,6 +236,7 @@ export const Home: VFC = () => {
                   onChange={handleEmotionChange}
                 />
                 <Textarea
+                  resize="none"
                   variant="unstyled"
                   className="textarea note sorrow"
                   width="60%"
@@ -283,6 +286,7 @@ export const Home: VFC = () => {
                   onChange={handleEmotionChange}
                 />
                 <Textarea
+                  resize="none"
                   variant="unstyled"
                   className="textarea note fun"
                   width="60%"
