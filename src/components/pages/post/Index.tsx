@@ -511,6 +511,26 @@ export const Index: VFC = () => {
                   </Box>
                 </Box>
               )}
+              <Flex justify="center" mt="16px">
+                <HStack spacing="16px">
+                  <Button
+                    _hover={{ opacity: 0.8 }}
+                    bg="#47789F"
+                    color="white"
+                    width="80px"
+                    onClick={(e) => handleSubmit(e)}
+                  >
+                    編集
+                  </Button>
+                  <Button
+                    border="3px solid #47789F"
+                    color="#47789F"
+                    width="80px"
+                  >
+                    削除
+                  </Button>
+                </HStack>
+              </Flex>
             </form>
           ) : (
             <>
