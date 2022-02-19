@@ -9,6 +9,7 @@ import { SignUp } from "./components/pages/auth/SignUp";
 import { Home } from "./components/pages/post/Home";
 import theme from "./theme/theme";
 import { HeaderLayout } from "./components/templates/HeaderLayout";
+import { Index } from "./components/pages/post/Index";
 
 export const AuthContext = createContext({});
 
@@ -73,6 +74,9 @@ function App() {
               <Private>
                 <Route exact path="/">
                   <Home />
+                </Route>
+                <Route exact path="/index">
+                  <Index />
                 </Route>
               </Private>
             </HeaderLayout>
