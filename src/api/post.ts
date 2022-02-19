@@ -21,7 +21,10 @@ export const createPost = (params: Pick<Post, "content" | "emotion">) => {
   });
 };
 
-export const updatePost = (id: number, params: Post) => {
+export const updatePost = (
+  id: number,
+  params: Pick<Post, "content" | "emotion">
+) => {
   return client.patch(`/api/v1/posts/${id}`, params, {
     headers: <any>{
       "access-token": Cookies.get("_access_token"),

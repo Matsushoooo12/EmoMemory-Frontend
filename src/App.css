@@ -46,10 +46,28 @@
   border: 0;
 }
 
+.textarea.note.happy.index {
+  background: linear-gradient(to top, #999 1px, #fff7d4 1px);
+  line-height: 20px;
+  background-size: 100% 20px;
+  background-origin: content-box;
+  background-attachment: local;
+  border: 0;
+}
+
 .textarea.note.anger {
   background: linear-gradient(to top, #999 1px, #ffd6d7 1px);
   line-height: 30px;
   background-size: 100% 30px;
+  background-origin: content-box;
+  background-attachment: local;
+  border: 0;
+}
+
+.textarea.note.anger.index {
+  background: linear-gradient(to top, #999 1px, #ffd6d7 1px);
+  line-height: 20px;
+  background-size: 100% 20px;
   background-origin: content-box;
   background-attachment: local;
   border: 0;
@@ -64,6 +82,15 @@
   border: 0;
 }
 
+.textarea.note.sorrow.index {
+  background: linear-gradient(to top, #999 1px, #dce3ff 1px);
+  line-height: 20px;
+  background-size: 100% 20px;
+  background-origin: content-box;
+  background-attachment: local;
+  border: 0;
+}
+
 .textarea.note.fun {
   background: linear-gradient(to top, #999 1px, #e2ffeb 1px);
   line-height: 30px;
@@ -71,4 +98,21 @@
   background-origin: content-box;
   background-attachment: local;
   border: 0;
+}
+
+.textarea.note.fun.index {
+  background: linear-gradient(to top, #999 1px, #e2ffeb 1px);
+  line-height: 20px;
+  background-size: 100% 20px;
+  background-origin: content-box;
+  background-attachment: local;
+  border: 0;
+}
+
+.css-1yoqdfl {
+  align-items: center;
+}
+
+.chakra-modal__content-container.css-v9b9hc {
+  align-items: center;
 }

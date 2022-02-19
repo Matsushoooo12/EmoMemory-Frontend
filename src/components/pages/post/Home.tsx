@@ -8,18 +8,18 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import React, { useState, VFC } from "react";
-import "../../App.css";
+import "../../../App.css";
 
-import HappyFace from "../../images/喜01.png";
-import HappyCard from "../../images/喜付箋.png";
-import AngerFace from "../../images/怒01.png";
-import AngerCard from "../../images/怒付箋.png";
-import SorrowFace from "../../images/哀01.png";
-import SorrowCard from "../../images/哀付箋.png";
-import FunFace from "../../images/楽01.png";
-import FunCard from "../../images/楽付箋.png";
+import HappyFace from "../../../images/喜01.png";
+import HappyCard from "../../../images/喜付箋.png";
+import AngerFace from "../../../images/怒01.png";
+import AngerCard from "../../../images/怒付箋.png";
+import SorrowFace from "../../../images/哀01.png";
+import SorrowCard from "../../../images/哀付箋.png";
+import FunFace from "../../../images/楽01.png";
+import FunCard from "../../../images/楽付箋.png";
 import { useHistory } from "react-router-dom";
-import { createPost } from "../../api/post";
+import { createPost } from "../../../api/post";
 
 export const Home: VFC = () => {
   const history = useHistory();
