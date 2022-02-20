@@ -218,10 +218,9 @@ export const Index: VFC = memo(() => {
         </Box>
         <Wrap spacing="40px">
           {posts.map((post) => (
-            <>
+            <React.Fragment key={post.id}>
               {post.emotion === emotion && (
                 <WrapItem
-                  key={post.id}
                   width="200px"
                   height="200px"
                   bg={cardColor(post.emotion)}
@@ -269,7 +268,6 @@ export const Index: VFC = memo(() => {
               )}
               {emotion === "" && (
                 <WrapItem
-                  key={post.id}
                   width="200px"
                   height="200px"
                   bg={cardColor(post.emotion)}
@@ -315,7 +313,7 @@ export const Index: VFC = memo(() => {
                   </Box>
                 </WrapItem>
               )}
-            </>
+            </React.Fragment>
           ))}
         </Wrap>
       </Box>
