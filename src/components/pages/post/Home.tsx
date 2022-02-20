@@ -7,7 +7,7 @@ import {
   Input,
   Textarea,
 } from "@chakra-ui/react";
-import React, { useState, VFC } from "react";
+import React, { memo, useState, VFC } from "react";
 import "../../../App.css";
 
 import HappyFace from "../../../images/喜01.png";
@@ -21,7 +21,7 @@ import FunCard from "../../../images/楽付箋.png";
 import { useHistory } from "react-router-dom";
 import { createPost } from "../../../api/post";
 
-export const Home: VFC = () => {
+export const Home: VFC = memo(() => {
   const history = useHistory();
   const [content, setContent] = useState("");
   const [emotion, setEmotion] = useState("happy");
@@ -322,4 +322,4 @@ export const Home: VFC = () => {
       </Box>
     </Box>
   );
-};
+});

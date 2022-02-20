@@ -12,7 +12,7 @@ import {
   Button,
   Input,
 } from "@chakra-ui/react";
-import React, { useContext, useEffect, useState, VFC } from "react";
+import React, { memo, useContext, useEffect, useState, VFC } from "react";
 import { Wrap, WrapItem } from "@chakra-ui/react";
 import "../../../App.css";
 
@@ -30,7 +30,7 @@ import { getAllPosts, updatePost } from "../../../api/post";
 import { AuthContext } from "../../../App";
 import { useHistory } from "react-router-dom";
 
-export const Index: VFC = () => {
+export const Index: VFC = memo(() => {
   const [posts, setPosts] = useState<Post[]>([]);
   const history = useHistory();
 
@@ -721,4 +721,4 @@ export const Index: VFC = () => {
       </Modal>
     </Box>
   );
-};
+});
