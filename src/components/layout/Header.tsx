@@ -1,11 +1,11 @@
-import { useCallback, useContext, VFC } from "react";
+import { memo, useCallback, useContext, VFC } from "react";
 import { Flex, Link, Box, HStack, Image } from "@chakra-ui/react";
 
 import headerLogo from "../../images/logo.png";
 import { AuthContext } from "../../App";
 import { useHistory } from "react-router-dom";
 
-export const Header: VFC = () => {
+export const Header: VFC = memo(() => {
   const history = useHistory();
   // ログイン状態によってメニュー切り替え
   const { loading, isSignedIn } = useContext<any>(AuthContext);
@@ -81,4 +81,4 @@ export const Header: VFC = () => {
       </Flex>
     </>
   );
-};
+});
