@@ -12,7 +12,7 @@ import {
   Button,
   Input,
 } from "@chakra-ui/react";
-import React, { useContext, useEffect, useState, VFC } from "react";
+import React, { memo, useContext, useEffect, useState, VFC } from "react";
 import { Wrap, WrapItem } from "@chakra-ui/react";
 import "../../../App.css";
 
@@ -26,13 +26,11 @@ import FunFace from "../../../images/楽01.png";
 import FunCard from "../../../images/楽付箋.png";
 import LikeButton from "../../../images/それなスタンプ.png";
 import { Post } from "../../../types/post";
-import { getAllPosts, updatePost } from "../../../api/post";
+import { deletePost, getAllPosts, updatePost } from "../../../api/post";
 import { AuthContext } from "../../../App";
-import { useHistory } from "react-router-dom";
 
-export const Index: VFC = () => {
+export const Index: VFC = memo(() => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const history = useHistory();
 
   const { currentUser } = useContext<any>(AuthContext);
 
@@ -65,7 +63,6 @@ export const Index: VFC = () => {
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log(isOpen);
 
   const onClickModalPost = (
     id: number,
@@ -81,8 +78,6 @@ export const Index: VFC = () => {
     });
     onOpen();
   };
-
-  console.log(value);
 
   const handleGetAllPosts = async () => {
     try {
@@ -143,13 +138,25 @@ export const Index: VFC = () => {
     try {
       const res = await updatePost(value.id, params);
       console.log(res.data);
-      history.push("/");
+      handleGetAllPosts();
+      // eslint-disable-next-line no-restricted-globals
+      location.reload();
     } catch (e) {
       console.log(e);
     }
   };
 
-  console.log(value);
+  const handleDelete = async (item: any) => {
+    console.log("click", item.id);
+    try {
+      const res = await deletePost(item.id);
+      console.log(res.data);
+      handleGetAllPosts();
+      onClose();
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Box pt="80px" width="100%" height="100%" minHeight="100vh">
       <Box width="80%" mx="auto" mt="80px">
@@ -318,54 +325,52 @@ export const Index: VFC = () => {
           {currentUser.id === value.userId ? (
             <form>
               {value.emotion === "happy" && (
-                <>
-                  <Box
-                    bgImage={HappyCard}
-                    bgPosition="center"
-                    bgSize="cover"
-                    bgRepeat="no-repeat"
-                    width="400px"
-                    height="400px"
-                    cursor="pointer"
-                  >
-                    <Box textAlign="center" pt="150px">
-                      <Input
-                        type="hidden"
-                        name="emotion"
-                        onChange={handleChange}
-                      />
-                      <Textarea
-                        resize="none"
-                        variant="unstyled"
-                        className="textarea note happy"
-                        width="60%"
-                        height="200px"
-                        onChange={handleChange}
-                        value={value.content}
-                        name="content"
-                      ></Textarea>
-                      <Flex
-                        justify="space-between"
-                        align="center"
-                        width="100%"
-                        px="80px"
-                      >
-                        <Text fontSize="14px">3days ago</Text>
-                        <Flex align="center">
-                          <HStack spacing={1}>
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="32px"
-                              height="32px"
-                            />
-                            <Text fontSize="14px">12</Text>
-                          </HStack>
-                        </Flex>
+                <Box
+                  bgImage={HappyCard}
+                  bgPosition="center"
+                  bgSize="cover"
+                  bgRepeat="no-repeat"
+                  width="400px"
+                  height="400px"
+                  cursor="pointer"
+                >
+                  <Box textAlign="center" pt="150px">
+                    <Input
+                      type="hidden"
+                      name="emotion"
+                      onChange={handleChange}
+                    />
+                    <Textarea
+                      resize="none"
+                      variant="unstyled"
+                      className="textarea note happy"
+                      width="60%"
+                      height="200px"
+                      onChange={handleChange}
+                      value={value.content}
+                      name="content"
+                    ></Textarea>
+                    <Flex
+                      justify="space-between"
+                      align="center"
+                      width="100%"
+                      px="80px"
+                    >
+                      <Text fontSize="14px">3days ago</Text>
+                      <Flex align="center">
+                        <HStack spacing={1}>
+                          <Image
+                            src={LikeButton}
+                            alt="LikeButton"
+                            width="32px"
+                            height="32px"
+                          />
+                          <Text fontSize="14px">12</Text>
+                        </HStack>
                       </Flex>
-                    </Box>
+                    </Flex>
                   </Box>
-                </>
+                </Box>
               )}
               {value.emotion === "anger" && (
                 <Box
@@ -526,6 +531,7 @@ export const Index: VFC = () => {
                     border="3px solid #47789F"
                     color="#47789F"
                     width="80px"
+                    onClick={() => handleDelete(value)}
                   >
                     削除
                   </Button>
@@ -721,4 +727,4 @@ export const Index: VFC = () => {
       </Modal>
     </Box>
   );
-};
+});
