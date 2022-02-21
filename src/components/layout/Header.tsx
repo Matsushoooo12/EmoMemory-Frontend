@@ -1,6 +1,7 @@
 import { memo, useCallback, useContext, VFC } from "react";
 import { Flex, Link, Box, HStack, Image, Text } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
+import Cookies from "js-cookie";
 
 import headerLogo from "../../images/logo.png";
 import { AuthContext } from "../../App";
@@ -8,13 +9,37 @@ import HappyFace from "../../images/喜01.png";
 import AngerFace from "../../images/怒01.png";
 import SorrowFace from "../../images/哀01.png";
 import FunFace from "../../images/楽01.png";
+import { signOut } from "../../api/auth";
 
 export const Header: VFC = memo(() => {
-  const { currentUser } = useContext<any>(AuthContext);
+  const { currentUser, setIsSignedIn } = useContext<any>(AuthContext);
   const history = useHistory();
   // ログイン状態によってメニュー切り替え
   const { loading, isSignedIn } = useContext<any>(AuthContext);
 
+  // ログアウト関数
+  const handleSignOut = async () => {
+    try {
+      const res = await signOut();
+
+      // eslint-disable-next-line no-cond-assign
+      if ((res.data.success = true)) {
+        Cookies.remove("_access_token");
+        Cookies.remove("_client");
+        Cookies.remove("_uid");
+
+        setIsSignedIn(false);
+        history.push("/signin");
+        console.log("succeeded in sign out");
+      } else {
+        console.log("failed in sign out");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // リンク遷移関数
   const onClickSignUp = useCallback(() => {
     history.push("/signup");
   }, [history]);
@@ -34,6 +59,7 @@ export const Header: VFC = memo(() => {
     history.push(`/profile/${currentUser.id}`);
   };
 
+  // ログインユーザーのヘッダーFace
   const headerProfileFace = () => {
     if (currentUser.emotion === "happy") {
       return HappyFace;
@@ -46,6 +72,7 @@ export const Header: VFC = memo(() => {
     }
   };
 
+  // ログイン状態でメニュー切り替え
   const HeaderMenus = () => {
     if (!loading) {
       if (isSignedIn) {
@@ -70,6 +97,9 @@ export const Header: VFC = memo(() => {
                   <Text>{currentUser.name}</Text>
                 </Flex>
               </Link>
+            </Box>
+            <Box>
+              <Link onClick={handleSignOut}>ログアウト</Link>
             </Box>
           </>
         );
