@@ -4,15 +4,15 @@ import { Post } from "../types/post";
 import client from "./client";
 
 export const getAllPosts = () => {
-  return client.get("/api/v1/posts");
+  return client.get("/posts");
 };
 
 export const getAPost = (id: number) => {
-  return client.get(`/api/v1/posts/${id}`);
+  return client.get(`/posts/${id}`);
 };
 
 export const createPost = (params: Pick<Post, "content" | "emotion">) => {
-  return client.post("/api/v1/posts", params, {
+  return client.post("/posts", params, {
     headers: <any>{
       "access-token": Cookies.get("_access_token"),
       client: Cookies.get("_client"),
@@ -25,7 +25,7 @@ export const updatePost = (
   id: number,
   params: Pick<Post, "content" | "emotion">
 ) => {
-  return client.patch(`/api/v1/posts/${id}`, params, {
+  return client.patch(`/posts/${id}`, params, {
     headers: <any>{
       "access-token": Cookies.get("_access_token"),
       client: Cookies.get("_client"),
@@ -35,7 +35,7 @@ export const updatePost = (
 };
 
 export const deletePost = (id: number) => {
-  return client.delete(`/api/v1/posts/${id}`, {
+  return client.delete(`/posts/${id}`, {
     headers: <any>{
       "access-token": Cookies.get("_access_token"),
       client: Cookies.get("_client"),
