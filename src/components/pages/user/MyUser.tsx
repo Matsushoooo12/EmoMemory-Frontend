@@ -26,32 +26,44 @@ export const MyUser: VFC<Props> = memo((props) => {
   };
 
   return (
-    <Box pt="80px" width="100%" height="100%" bg={profileBg()}>
-      <Flex justify="center" my="40px">
-        <HStack spacing="24px">
-          <Button
-            width="100px"
-            onClick={() => setShowLabel("MyProfile")}
-            bg={showLabel === "MyProfile" ? "#47789F" : "white"}
-            color={showLabel === "MyProfile" ? "white" : "#47789F"}
-            border={showLabel === "MyProfile" ? "none" : "3px solid #47789F"}
-            _hover={{ opacity: 0.8 }}
-          >
-            My Profile
-          </Button>
-          <Button
-            width="100px"
-            onClick={() => setShowLabel("MyPost")}
-            bg={showLabel === "MyPost" ? "#47789F" : "white"}
-            color={showLabel === "MyPost" ? "white" : "#47789F"}
-            border={showLabel === "MyPost" ? "none" : "3px solid #47789F"}
-            _hover={{ opacity: 0.8 }}
-          >
-            My Post
-          </Button>
-        </HStack>
-      </Flex>
-      <Box mx="auto" width="560px" height="100%">
+    <Box pt="80px" width="100%" height="100%" bg={profileBg()} pb="80px">
+      <Box
+        width="100%"
+        height="120px"
+        zIndex="50"
+        bg={profileBg()}
+        position="fixed"
+        top="80px"
+        right="0"
+        left="0"
+        margin="auto"
+      >
+        <Flex justify="center" my="40px">
+          <HStack spacing="24px">
+            <Button
+              width="100px"
+              onClick={() => setShowLabel("MyProfile")}
+              bg={showLabel === "MyProfile" ? "#47789F" : "white"}
+              color={showLabel === "MyProfile" ? "white" : "#47789F"}
+              border={showLabel === "MyProfile" ? "none" : "3px solid #47789F"}
+              _hover={{ opacity: 0.8 }}
+            >
+              My Profile
+            </Button>
+            <Button
+              width="100px"
+              onClick={() => setShowLabel("MyPost")}
+              bg={showLabel === "MyPost" ? "#47789F" : "white"}
+              color={showLabel === "MyPost" ? "white" : "#47789F"}
+              border={showLabel === "MyPost" ? "none" : "3px solid #47789F"}
+              _hover={{ opacity: 0.8 }}
+            >
+              My Post
+            </Button>
+          </HStack>
+        </Flex>
+      </Box>
+      <Box mx="auto" width="560px" height="100%" mt="120px">
         <>
           {showLabel === "MyProfile" && <Profile />}
           {showLabel === "MyPost" && <MyPost />}

@@ -17,6 +17,8 @@ import {
   Input,
 } from "@chakra-ui/react";
 import React, { memo, useContext, useState, VFC } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
 
 import HappyFace from "../../../images/喜01.png";
 import AngerFace from "../../../images/怒01.png";
@@ -124,7 +126,7 @@ export const Profile: VFC = memo(() => {
       <Text fontSize="32px" fontWeight="bold">
         Email : {currentUser.email}
       </Text>
-      <Flex mt="16px" justify="space-between" align="center">
+      <Flex mt="16px" mb="40px" justify="space-between" align="center">
         <Text fontSize="16px" fontWeight="bold">
           post : 27 ・ like : 23
         </Text>
@@ -138,6 +140,10 @@ export const Profile: VFC = memo(() => {
           Edit Profile
         </Button>
       </Flex>
+      <Box bg="white" shadow="md" p="24px" borderRadius="md">
+        <FullCalendar plugins={[dayGridPlugin]} initialView="dayGridMonth" />
+      </Box>
+      {/* プロフィール編集モーダル */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent shadow="md" width="480px" height="430px">
