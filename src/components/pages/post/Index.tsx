@@ -110,6 +110,22 @@ export const Index: VFC = memo(() => {
     }
   };
 
+  const cardBorderColor = (emotion: string, userId: number) => {
+    if (currentUser.id === userId) {
+      if (emotion === "happy") {
+        return "3px solid yellow";
+      } else if (emotion === "anger") {
+        return "3px solid red";
+      } else if (emotion === "sorrow") {
+        return "3px solid blue";
+      } else if (emotion === "fun") {
+        return "3px solid green";
+      }
+    } else {
+      return "none";
+    }
+  };
+
   const textareaColor = (emotion: string) => {
     if (emotion === "happy") {
       return "textarea note happy index";
@@ -229,6 +245,7 @@ export const Index: VFC = memo(() => {
                   width="200px"
                   height="200px"
                   bg={cardColor(post.emotion)}
+                  border={cardBorderColor(post.emotion, post.user.id)}
                   borderRadius="md"
                   justifyContent="center"
                   cursor="pointer"
@@ -279,6 +296,7 @@ export const Index: VFC = memo(() => {
                   width="200px"
                   height="200px"
                   bg={cardColor(post.emotion)}
+                  border={cardBorderColor(post.emotion, post.user.id)}
                   borderRadius="md"
                   justifyContent="center"
                   onClick={() =>
