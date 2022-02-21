@@ -570,11 +570,6 @@ export const Index: VFC = memo(() => {
                   cursor="pointer"
                 >
                   <Box textAlign="center" pt="150px">
-                    <Input
-                      type="hidden"
-                      name="emotion"
-                      //   onChange={handleEmotionChange}
-                    />
                     <Textarea
                       cursor="pointer"
                       resize="none"
@@ -591,7 +586,9 @@ export const Index: VFC = memo(() => {
                       width="100%"
                       px="80px"
                     >
-                      <Text fontSize="14px">3days ago</Text>
+                      <Text fontSize="14px">
+                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                      </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
@@ -635,7 +632,9 @@ export const Index: VFC = memo(() => {
                       width="100%"
                       px="80px"
                     >
-                      <Text fontSize="14px">3days ago</Text>
+                      <Text fontSize="14px">
+                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                      </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
@@ -679,7 +678,9 @@ export const Index: VFC = memo(() => {
                       width="100%"
                       px="80px"
                     >
-                      <Text fontSize="14px">3days ago</Text>
+                      <Text fontSize="14px">
+                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                      </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
@@ -723,7 +724,9 @@ export const Index: VFC = memo(() => {
                       width="100%"
                       px="80px"
                     >
-                      <Text fontSize="14px">3days ago</Text>
+                      <Text fontSize="14px">
+                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                      </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
