@@ -11,7 +11,9 @@ import {
   useDisclosure,
   Button,
   Input,
+  ModalCloseButton,
 } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import React, { memo, useContext, useEffect, useState, VFC } from "react";
 import { Wrap, WrapItem } from "@chakra-ui/react";
 import "../../../App.css";
@@ -39,6 +41,7 @@ export const Index: VFC = memo(() => {
     userId: 0,
     emotion: "",
     content: "",
+    createdAt: "",
   });
   const [emotion, setEmotion] = useState("");
 
@@ -68,13 +71,15 @@ export const Index: VFC = memo(() => {
     id: number,
     userId: number,
     emotion: string,
-    content: string
+    content: string,
+    createdAt: string
   ) => {
     setValue({
       id: id,
       userId: userId,
       emotion: emotion,
       content: content,
+      createdAt: createdAt,
     });
     onOpen();
   };
@@ -232,7 +237,8 @@ export const Index: VFC = memo(() => {
                       post.id,
                       post.user.id,
                       post.emotion,
-                      post.content
+                      post.content,
+                      post.createdAt
                     )
                   }
                 >
@@ -250,7 +256,9 @@ export const Index: VFC = memo(() => {
                       defaultValue={post.content}
                     ></Textarea>
                     <Flex justify="space-between" align="center">
-                      <Text fontSize="12px">3days ago</Text>
+                      <Text fontSize="12px">
+                        {dayjs(post.createdAt).format("YYYY/MM/DD")}
+                      </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
@@ -278,7 +286,8 @@ export const Index: VFC = memo(() => {
                       post.id,
                       post.user.id,
                       post.emotion,
-                      post.content
+                      post.content,
+                      post.createdAt
                     )
                   }
                   cursor="pointer"
@@ -297,7 +306,9 @@ export const Index: VFC = memo(() => {
                       defaultValue={post.content}
                     ></Textarea>
                     <Flex justify="space-between" align="center">
-                      <Text fontSize="12px">3days ago</Text>
+                      <Text fontSize="12px">
+                        {dayjs(post.createdAt).format("YYYY/MM/DD")}
+                      </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
@@ -320,6 +331,7 @@ export const Index: VFC = memo(() => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg="none" border="none" shadow="none">
+          <ModalCloseButton mr="64px" mt="100px" />
           {currentUser.id === value.userId ? (
             <form>
               {value.emotion === "happy" && (
@@ -354,7 +366,9 @@ export const Index: VFC = memo(() => {
                       width="100%"
                       px="80px"
                     >
-                      <Text fontSize="14px">3days ago</Text>
+                      <Text fontSize="14px">
+                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                      </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
@@ -402,7 +416,9 @@ export const Index: VFC = memo(() => {
                       width="100%"
                       px="80px"
                     >
-                      <Text fontSize="14px">3days ago</Text>
+                      <Text fontSize="14px">
+                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                      </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
@@ -450,7 +466,9 @@ export const Index: VFC = memo(() => {
                       width="100%"
                       px="80px"
                     >
-                      <Text fontSize="14px">3days ago</Text>
+                      <Text fontSize="14px">
+                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                      </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
@@ -498,7 +516,9 @@ export const Index: VFC = memo(() => {
                       width="100%"
                       px="80px"
                     >
-                      <Text fontSize="14px">3days ago</Text>
+                      <Text fontSize="14px">
+                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                      </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
