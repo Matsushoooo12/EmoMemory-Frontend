@@ -33,6 +33,13 @@ export const SignIn: VFC = memo(() => {
     password: "",
   });
 
+  const handleReset = () => {
+    setValue({
+      email: "",
+      password: "",
+    });
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({
       ...value,
@@ -128,7 +135,11 @@ export const SignIn: VFC = memo(() => {
                       >
                         ログイン
                       </Button>
-                      <Button border="3px solid #47789F" color="#47789F">
+                      <Button
+                        border="3px solid #47789F"
+                        color="#47789F"
+                        onClick={handleReset}
+                      >
                         リセット
                       </Button>
                     </HStack>
