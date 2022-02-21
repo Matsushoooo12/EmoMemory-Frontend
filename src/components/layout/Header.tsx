@@ -5,6 +5,9 @@ import { useHistory } from "react-router-dom";
 import headerLogo from "../../images/logo.png";
 import { AuthContext } from "../../App";
 import HappyFace from "../../images/喜01.png";
+import AngerFace from "../../images/怒01.png";
+import SorrowFace from "../../images/哀01.png";
+import FunFace from "../../images/楽01.png";
 
 export const Header: VFC = memo(() => {
   const { currentUser } = useContext<any>(AuthContext);
@@ -31,6 +34,18 @@ export const Header: VFC = memo(() => {
     history.push(`/profile/${currentUser.id}`);
   };
 
+  const headerProfileFace = () => {
+    if (currentUser.emotion === "happy") {
+      return HappyFace;
+    } else if (currentUser.emotion === "anger") {
+      return AngerFace;
+    } else if (currentUser.emotion === "sorrow") {
+      return SorrowFace;
+    } else if (currentUser.emotion === "fun") {
+      return FunFace;
+    }
+  };
+
   const HeaderMenus = () => {
     if (!loading) {
       if (isSignedIn) {
@@ -46,7 +61,7 @@ export const Header: VFC = memo(() => {
               <Link onClick={onClickProfile}>
                 <Flex align="center">
                   <Image
-                    src={HappyFace}
+                    src={headerProfileFace()}
                     alt="HappyFace"
                     width="40px"
                     height="40px"
