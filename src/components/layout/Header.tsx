@@ -27,10 +27,9 @@ export const Header: VFC = memo(() => {
     history.push("/index");
   }, [history]);
 
-  const onClickProfile = useCallback(() => {
+  const onClickProfile = () => {
     history.push(`/profile/${currentUser.id}`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history]);
+  };
 
   const HeaderMenus = () => {
     if (!loading) {
