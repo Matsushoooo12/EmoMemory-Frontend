@@ -29,7 +29,6 @@ export const SignIn: VFC = memo(() => {
   }, [history]);
   const { setIsSignedIn, setCurrentUser } = useContext<any>(AuthContext);
   const [value, setValue] = useState({
-    id: 0,
     email: "",
     password: "",
   });

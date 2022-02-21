@@ -4,13 +4,13 @@ import { User } from "../types/user";
 import client from "./client";
 
 // サインアップ
-export const signUp = (params: User) => {
+export const signUp = (params: Omit<User, "id">) => {
   return client.post("/auth", params);
 };
 
 // サインイン
 export const signIn = (
-  params: Omit<User, "passwordConfirmation" | "name" | "confirmSuccessUrl">
+  params: Omit<User, "id" | "name" | "passwordConfirmation">
 ) => {
   return client.post("/auth/sign_in", params);
 };
