@@ -20,6 +20,7 @@ export const MyUser: VFC<Props> = memo((props) => {
             bg={showLabel === "MyProfile" ? "#47789F" : "white"}
             color={showLabel === "MyProfile" ? "white" : "#47789F"}
             border={showLabel === "MyProfile" ? "none" : "3px solid #47789F"}
+            _hover={{ opacity: 0.8 }}
           >
             My Profile
           </Button>
@@ -29,6 +30,7 @@ export const MyUser: VFC<Props> = memo((props) => {
             bg={showLabel === "MyPost" ? "#47789F" : "white"}
             color={showLabel === "MyPost" ? "white" : "#47789F"}
             border={showLabel === "MyPost" ? "none" : "3px solid #47789F"}
+            _hover={{ opacity: 0.8 }}
           >
             My Post
           </Button>
