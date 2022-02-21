@@ -23,8 +23,6 @@ import { AuthContext } from "../../../App";
 import Cookies from "js-cookie";
 
 export const SignUp: VFC = memo(() => {
-  // const [isSendEmail, setIsSendEmail] = useState<boolean>(false);
-  // const confirmSuccessUrl = "http://localhost:3000/signin";
   const history = useHistory();
   const { setIsSignedIn, setCurrentUser } = useContext<any>(AuthContext);
   const onClickSignIn = useCallback(() => {
@@ -36,8 +34,17 @@ export const SignUp: VFC = memo(() => {
     email: "",
     password: "",
     passwordConfirmation: "",
-    // confirmSuccessUrl: confirmSuccessUrl,
   });
+  const handleReset = () => [
+    setValue({
+      name: "",
+      emotion: "happy",
+      email: "",
+      password: "",
+      passwordConfirmation: "",
+    }),
+  ];
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({
       ...value,
@@ -167,7 +174,11 @@ export const SignUp: VFC = memo(() => {
                     >
                       新規登録
                     </Button>
-                    <Button border="3px solid #47789F" color="#47789F">
+                    <Button
+                      border="3px solid #47789F"
+                      color="#47789F"
+                      onClick={handleReset}
+                    >
                       リセット
                     </Button>
                   </HStack>
@@ -185,51 +196,7 @@ export const SignUp: VFC = memo(() => {
                 ログインへ
               </Link>
             </InputGroup>
-            {/* <Input
-                  value={value.confirmSuccessUrl}
-                  type="hidden"
-                  name="confirmSuccessUrl"
-                /> */}
           </form>
-          {/* </>
-          ) : (
-            <>
-              <Heading
-                as="h1"
-                fontSize="32px"
-                textAlign="center"
-                mt="20px"
-                mb="32px"
-              >
-                仮登録完了
-              </Heading>
-              <Stack spacing="16px">
-                <Text>
-                  下記メールアドレス宛に本登録のご案内を送信しました。
-                  認証用のURLをクリックしたらログイン画面に遷移してログインできるようになります。
-                </Text>
-                <Text textAlign="center" fontWeight="bold" fontSize="20px">
-                  {value.email}
-                </Text>
-                <Box
-                  width="100%"
-                  height="100%"
-                  bg="#EDF2F6"
-                  borderRadius="md"
-                  p="16px"
-                >
-                  <Heading as="h2" fontSize="16px" mb="16px">
-                    メールが届かない場合
-                  </Heading>
-                  <Text fontSize="12px">
-                    ・迷惑メールフォルダに振り分けられていないかご確認ください。
-                    <br />
-                    ・メールアドレスが間違っていた場合は、正しいメールアドレスで新規登録を行ってください。
-                  </Text>
-                </Box>
-              </Stack>
-            </>
-          )} */}
         </Box>
         <Flex justify="space-between">
           <Image
