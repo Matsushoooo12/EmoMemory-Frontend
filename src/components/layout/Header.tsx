@@ -27,6 +27,11 @@ export const Header: VFC = memo(() => {
     history.push("/index");
   }, [history]);
 
+  const onClickProfile = useCallback(() => {
+    history.push(`/profile/${currentUser.id}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history]);
+
   const HeaderMenus = () => {
     if (!loading) {
       if (isSignedIn) {
@@ -39,7 +44,7 @@ export const Header: VFC = memo(() => {
               <Link onClick={onClickIndex}>投稿一覧</Link>
             </Box>
             <Box>
-              <Link>
+              <Link onClick={onClickProfile}>
                 <Flex align="center">
                   <Image
                     src={HappyFace}
