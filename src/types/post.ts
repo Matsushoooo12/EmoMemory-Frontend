@@ -4,7 +4,7 @@ export type Post = {
   id: number;
   content: string;
   emotion: string;
-  createdAt: Date;
+  createdAt: string;
   updatedAt: Date;
   user: Pick<User, "id" | "name" | "email">;
 };
