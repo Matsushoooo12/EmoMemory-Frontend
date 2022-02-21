@@ -1,4 +1,4 @@
-import { memo, useCallback, useState, VFC } from "react";
+import { memo, useCallback, useContext, useState, VFC } from "react";
 import {
   Box,
   Heading,
@@ -19,21 +19,23 @@ import SorrowFace from "../../../images/哀01.png";
 import FunFace from "../../../images/楽01.png";
 import { useHistory } from "react-router-dom";
 import { signUp } from "../../../api/auth";
+import { AuthContext } from "../../../App";
+import Cookies from "js-cookie";
 
 export const SignUp: VFC = memo(() => {
-  const [isSendEmail, setIsSendEmail] = useState<boolean>(false);
-  const confirmSuccessUrl = "http://localhost:3000/signin";
+  // const [isSendEmail, setIsSendEmail] = useState<boolean>(false);
+  // const confirmSuccessUrl = "http://localhost:3000/signin";
   const history = useHistory();
+  const { setIsSignedIn, setCurrentUser } = useContext<any>(AuthContext);
   const onClickSignIn = useCallback(() => {
     history.push("/signin");
   }, [history]);
   const [value, setValue] = useState({
-    id: 0,
     name: "",
     email: "",
     password: "",
     passwordConfirmation: "",
-    confirmSuccessUrl: confirmSuccessUrl,
+    // confirmSuccessUrl: confirmSuccessUrl,
   });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({
@@ -45,8 +47,16 @@ export const SignUp: VFC = memo(() => {
     e.preventDefault();
     try {
       const res = await signUp(value);
-      console.log(res);
-      setIsSendEmail(true);
+      if (res.status === 200) {
+        Cookies.set("_access_token", res.headers["access-token"]);
+        Cookies.set("_client", res.headers["client"]);
+        Cookies.set("_uid", res.headers["uid"]);
+
+        setIsSignedIn(true);
+        setCurrentUser(res.data.data);
+
+        history.push("/");
+      }
     } catch (e) {
       console.log(e);
     }
@@ -86,95 +96,95 @@ export const SignUp: VFC = memo(() => {
           />
         </Flex>
         <Box width="320px" mx="auto">
-          {!isSendEmail ? (
-            <>
-              <Heading
-                as="h1"
-                fontSize="32px"
-                textAlign="center"
-                mt="20px"
-                mb="32px"
-              >
-                新規登録
-              </Heading>
-              <form>
-                <InputGroup display="block" position="relative">
-                  <Stack spacing="40px">
-                    <Input
-                      placeholder="名前"
-                      value={value.name}
-                      onChange={(e) => handleChange(e)}
-                      type="text"
-                      name="name"
-                      variant="flushed"
-                      focusBorderColor="#47789F"
-                    />
-                    <Input
-                      placeholder="メールアドレス"
-                      value={value.email}
-                      onChange={(e) => handleChange(e)}
-                      type="email"
-                      name="email"
-                      variant="flushed"
-                      focusBorderColor="#47789F"
-                    />
-                    <Input
-                      placeholder="パスワード"
-                      value={value.password}
-                      onChange={(e) => handleChange(e)}
-                      type="password"
-                      name="password"
-                      variant="flushed"
-                      focusBorderColor="#47789F"
-                    />
-                    <Input
-                      placeholder="パスワード確認"
-                      value={value.passwordConfirmation}
-                      onChange={(e) => handleChange(e)}
-                      type="password"
-                      name="passwordConfirmation"
-                      variant="flushed"
-                      focusBorderColor="#47789F"
-                    />
-                    <Text fontSize="12px">
-                      新規登録すると、利用規約および プライバシーポリシーに
-                      同意したとみなされます。
-                    </Text>
-                    <Flex justify="center">
-                      <HStack spacing="32px">
-                        <Button
-                          bg="#47789F"
-                          color="white"
-                          _hover={{ opacity: 0.8 }}
-                          onClick={(e) => handleSubmit(e)}
-                        >
-                          新規登録
-                        </Button>
-                        <Button border="3px solid #47789F" color="#47789F">
-                          リセット
-                        </Button>
-                      </HStack>
-                    </Flex>
-                  </Stack>
-                  <Link
-                    textAlign="right"
-                    fontSize="12px"
-                    fontWeight="bold"
-                    color="#47789F"
-                    display="block"
-                    mt="24px"
-                    onClick={onClickSignIn}
-                  >
-                    ログインへ
-                  </Link>
-                </InputGroup>
+          {/* {!isSendEmail ? (
+            <> */}
+          <Heading
+            as="h1"
+            fontSize="32px"
+            textAlign="center"
+            mt="20px"
+            mb="32px"
+          >
+            新規登録
+          </Heading>
+          <form>
+            <InputGroup display="block" position="relative">
+              <Stack spacing="40px">
                 <Input
+                  placeholder="名前"
+                  value={value.name}
+                  onChange={(e) => handleChange(e)}
+                  type="text"
+                  name="name"
+                  variant="flushed"
+                  focusBorderColor="#47789F"
+                />
+                <Input
+                  placeholder="メールアドレス"
+                  value={value.email}
+                  onChange={(e) => handleChange(e)}
+                  type="email"
+                  name="email"
+                  variant="flushed"
+                  focusBorderColor="#47789F"
+                />
+                <Input
+                  placeholder="パスワード"
+                  value={value.password}
+                  onChange={(e) => handleChange(e)}
+                  type="password"
+                  name="password"
+                  variant="flushed"
+                  focusBorderColor="#47789F"
+                />
+                <Input
+                  placeholder="パスワード確認"
+                  value={value.passwordConfirmation}
+                  onChange={(e) => handleChange(e)}
+                  type="password"
+                  name="passwordConfirmation"
+                  variant="flushed"
+                  focusBorderColor="#47789F"
+                />
+                <Text fontSize="12px">
+                  新規登録すると、利用規約および プライバシーポリシーに
+                  同意したとみなされます。
+                </Text>
+                <Flex justify="center">
+                  <HStack spacing="32px">
+                    <Button
+                      bg="#47789F"
+                      color="white"
+                      _hover={{ opacity: 0.8 }}
+                      onClick={(e) => handleSubmit(e)}
+                    >
+                      新規登録
+                    </Button>
+                    <Button border="3px solid #47789F" color="#47789F">
+                      リセット
+                    </Button>
+                  </HStack>
+                </Flex>
+              </Stack>
+              <Link
+                textAlign="right"
+                fontSize="12px"
+                fontWeight="bold"
+                color="#47789F"
+                display="block"
+                mt="24px"
+                onClick={onClickSignIn}
+              >
+                ログインへ
+              </Link>
+            </InputGroup>
+            {/* <Input
                   value={value.confirmSuccessUrl}
                   type="hidden"
                   name="confirmSuccessUrl"
-                />
-              </form>
-            </>
+                /> */}
+          </form>
+          {/* </>
           ) : (
             <>
               <Heading
@@ -212,7 +222,7 @@ export const SignUp: VFC = memo(() => {
                 </Box>
               </Stack>
             </>
-          )}
+          )} */}
         </Box>
         <Flex justify="space-between">
           <Image
