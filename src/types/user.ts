@@ -4,5 +4,4 @@ export type User = {
   email: string;
   password: string;
   passwordConfirmation: string;
-  confirmSuccessUrl: string;
 };
