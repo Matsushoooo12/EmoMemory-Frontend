@@ -76,6 +76,10 @@ export const Profile: VFC = memo(() => {
     setEmotionFace("fun");
   };
 
+  const handleReset = () => {
+    setName("");
+  };
+
   return (
     <>
       <Flex justify="space-between" align="center">
@@ -148,24 +152,6 @@ export const Profile: VFC = memo(() => {
         <ModalOverlay />
         <ModalContent shadow="md" width="480px" height="430px">
           <ModalBody textAlign="center">
-            <Flex justify="space-between">
-              <Image
-                width="64px"
-                height="64px"
-                marginLeft="-56px"
-                marginTop="-48px"
-                src={HappyFace}
-                alt="HappyFace"
-              />
-              <Image
-                width="64px"
-                height="64px"
-                src={AngerFace}
-                alt="AngerFace"
-                marginRight="-56px"
-                marginTop="-48px"
-              />
-            </Flex>
             <ModalCloseButton
               mt="16px"
               mr="16px"
@@ -173,7 +159,7 @@ export const Profile: VFC = memo(() => {
               fontWeight="bold"
             />
             <Box width="320px" mx="auto">
-              <Heading as="h1" fontSize="32px" mt="20px" mb="32px">
+              <Heading as="h1" fontSize="32px" mt="40px" mb="32px">
                 プロフィール編集
               </Heading>
               <form>
@@ -263,6 +249,7 @@ export const Profile: VFC = memo(() => {
                           border="3px solid #47789F"
                           color="#47789F"
                           width="80px"
+                          onClick={handleReset}
                         >
                           リセット
                         </Button>
