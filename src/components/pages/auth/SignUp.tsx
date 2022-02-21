@@ -32,6 +32,7 @@ export const SignUp: VFC = memo(() => {
   }, [history]);
   const [value, setValue] = useState({
     name: "",
+    emotion: "happy",
     email: "",
     password: "",
     passwordConfirmation: "",
@@ -145,6 +146,12 @@ export const SignUp: VFC = memo(() => {
                   name="passwordConfirmation"
                   variant="flushed"
                   focusBorderColor="#47789F"
+                />
+                <Input
+                  type="hidden"
+                  name="emotion"
+                  onChange={(e) => handleChange(e)}
+                  value={value.emotion}
                 />
                 <Text fontSize="12px">
                   新規登録すると、利用規約および プライバシーポリシーに
