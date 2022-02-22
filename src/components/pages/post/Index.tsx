@@ -181,7 +181,14 @@ export const Index: VFC = memo(() => {
   return (
     <Box py="80px" width="100%" height="100%" minHeight="100vh">
       <Box width="80%" mx="auto" mt="80px">
-        <Box width="500px" mx="auto">
+        <Box
+          width="500px"
+          position="fixed"
+          right="0"
+          left="0"
+          margin="auto"
+          zIndex="50"
+        >
           <Flex justify="center" mx="40px" mb="40px">
             <HStack spacing="24px">
               <Flex
@@ -237,7 +244,7 @@ export const Index: VFC = memo(() => {
             </HStack>
           </Flex>
         </Box>
-        <Wrap spacing="40px">
+        <Wrap spacing="40px" pt="100px">
           {posts.map((post) => (
             <React.Fragment key={post.id}>
               {post.emotion === emotion && (
