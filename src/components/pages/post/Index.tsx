@@ -179,7 +179,7 @@ export const Index: VFC = memo(() => {
     }
   };
   return (
-    <Box pt="80px" width="100%" height="100%" minHeight="100vh">
+    <Box py="80px" width="100%" height="100%" minHeight="100vh">
       <Box width="80%" mx="auto" mt="80px">
         <Box width="500px" mx="auto">
           <Flex justify="center" mx="40px" mb="40px">
