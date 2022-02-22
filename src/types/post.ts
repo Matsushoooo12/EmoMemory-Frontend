@@ -1,3 +1,4 @@
+import { Like } from "./like";
 import { User } from "./user";
 
 export type Post = {
@@ -7,4 +8,5 @@ export type Post = {
   createdAt: string;
   updatedAt: Date;
   user: Pick<User, "id" | "name" | "email">;
+  likes: Like[];
 };
