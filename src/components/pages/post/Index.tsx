@@ -42,6 +42,7 @@ export const Index: VFC = memo(() => {
     emotion: "",
     content: "",
     createdAt: "",
+    likesNumber: 0,
   });
   const [emotion, setEmotion] = useState("");
 
@@ -72,7 +73,8 @@ export const Index: VFC = memo(() => {
     userId: number,
     emotion: string,
     content: string,
-    createdAt: string
+    createdAt: string,
+    likesNumber: number
   ) => {
     setValue({
       id: id,
@@ -80,6 +82,7 @@ export const Index: VFC = memo(() => {
       emotion: emotion,
       content: content,
       createdAt: createdAt,
+      likesNumber: likesNumber,
     });
     onOpen();
   };
@@ -262,7 +265,8 @@ export const Index: VFC = memo(() => {
                       post.user.id,
                       post.emotion,
                       post.content,
-                      post.createdAt
+                      post.createdAt,
+                      post.likes.length
                     )
                   }
                 >
@@ -291,7 +295,7 @@ export const Index: VFC = memo(() => {
                             width="24px"
                             height="24px"
                           />
-                          <Text fontSize="12px">12</Text>
+                          <Text fontSize="12px">{post.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -312,7 +316,8 @@ export const Index: VFC = memo(() => {
                       post.user.id,
                       post.emotion,
                       post.content,
-                      post.createdAt
+                      post.createdAt,
+                      post.likes.length
                     )
                   }
                   cursor="pointer"
@@ -342,7 +347,7 @@ export const Index: VFC = memo(() => {
                             width="24px"
                             height="24px"
                           />
-                          <Text fontSize="12px">12</Text>
+                          <Text fontSize="12px">{post.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -402,7 +407,7 @@ export const Index: VFC = memo(() => {
                             width="32px"
                             height="32px"
                           />
-                          <Text fontSize="14px">12</Text>
+                          <Text fontSize="14px">{value.likesNumber}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -452,7 +457,7 @@ export const Index: VFC = memo(() => {
                             width="32px"
                             height="32px"
                           />
-                          <Text fontSize="14px">12</Text>
+                          <Text fontSize="14px">{value.likesNumber}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -502,7 +507,7 @@ export const Index: VFC = memo(() => {
                             width="32px"
                             height="32px"
                           />
-                          <Text fontSize="14px">12</Text>
+                          <Text fontSize="14px">{value.likesNumber}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -552,7 +557,7 @@ export const Index: VFC = memo(() => {
                             width="32px"
                             height="32px"
                           />
-                          <Text fontSize="14px">12</Text>
+                          <Text fontSize="14px">{value.likesNumber}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -622,7 +627,7 @@ export const Index: VFC = memo(() => {
                             width="32px"
                             height="32px"
                           />
-                          <Text fontSize="14px">12</Text>
+                          <Text fontSize="14px">{value.likesNumber}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -668,7 +673,7 @@ export const Index: VFC = memo(() => {
                             width="32px"
                             height="32px"
                           />
-                          <Text fontSize="14px">12</Text>
+                          <Text fontSize="14px">{value.likesNumber}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -714,7 +719,7 @@ export const Index: VFC = memo(() => {
                             width="32px"
                             height="32px"
                           />
-                          <Text fontSize="14px">12</Text>
+                          <Text fontSize="14px">{value.likesNumber}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -760,7 +765,7 @@ export const Index: VFC = memo(() => {
                             width="32px"
                             height="32px"
                           />
-                          <Text fontSize="14px">12</Text>
+                          <Text fontSize="14px">{value.likesNumber}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
