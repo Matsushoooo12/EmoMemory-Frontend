@@ -30,6 +30,7 @@ import LikeButton from "../../../images/それなスタンプ.png";
 import { Post } from "../../../types/post";
 import { deletePost, getAllPosts, updatePost } from "../../../api/post";
 import { AuthContext } from "../../../App";
+import { createLike, deleteLike } from "../../../api/like";
 
 export const Index: VFC = memo(() => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -181,6 +182,26 @@ export const Index: VFC = memo(() => {
       console.log(e);
     }
   };
+
+  const handleCreateLike = async (item: Post) => {
+    try {
+      const res = await createLike(item.id);
+      console.log(res.data);
+      handleGetAllPosts();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleDeleteLike = async (item: Post) => {
+    try {
+      const res = await deleteLike(item.id);
+      console.log(res.data);
+      handleGetAllPosts();
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Box py="80px" width="100%" height="100%" minHeight="100vh">
       <Box width="80%" mx="auto" mt="80px">
@@ -259,16 +280,6 @@ export const Index: VFC = memo(() => {
                   borderRadius="md"
                   justifyContent="center"
                   cursor="pointer"
-                  onClick={() =>
-                    onClickModalPost(
-                      post.id,
-                      post.user.id,
-                      post.emotion,
-                      post.content,
-                      post.createdAt,
-                      post.likes.length
-                    )
-                  }
                 >
                   <Box textAlign="center">
                     <Textarea
@@ -282,6 +293,16 @@ export const Index: VFC = memo(() => {
                       height="140px"
                       fontSize="12px"
                       defaultValue={post.content}
+                      onClick={() =>
+                        onClickModalPost(
+                          post.id,
+                          post.user.id,
+                          post.emotion,
+                          post.content,
+                          post.createdAt,
+                          post.likes.length
+                        )
+                      }
                     ></Textarea>
                     <Flex justify="space-between" align="center">
                       <Text fontSize="12px">
@@ -289,12 +310,26 @@ export const Index: VFC = memo(() => {
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="24px"
-                            height="24px"
-                          />
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post)}
+                            />
+                          )}
                           <Text fontSize="12px">{post.likes.length}</Text>
                         </HStack>
                       </Flex>
@@ -310,16 +345,6 @@ export const Index: VFC = memo(() => {
                   border={cardBorderColor(post.emotion, post.user.id)}
                   borderRadius="md"
                   justifyContent="center"
-                  onClick={() =>
-                    onClickModalPost(
-                      post.id,
-                      post.user.id,
-                      post.emotion,
-                      post.content,
-                      post.createdAt,
-                      post.likes.length
-                    )
-                  }
                   cursor="pointer"
                 >
                   <Box textAlign="center">
@@ -334,6 +359,16 @@ export const Index: VFC = memo(() => {
                       height="140px"
                       fontSize="12px"
                       defaultValue={post.content}
+                      onClick={() =>
+                        onClickModalPost(
+                          post.id,
+                          post.user.id,
+                          post.emotion,
+                          post.content,
+                          post.createdAt,
+                          post.likes.length
+                        )
+                      }
                     ></Textarea>
                     <Flex justify="space-between" align="center">
                       <Text fontSize="12px">
@@ -341,12 +376,26 @@ export const Index: VFC = memo(() => {
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="24px"
-                            height="24px"
-                          />
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post)}
+                            />
+                          )}
                           <Text fontSize="12px">{post.likes.length}</Text>
                         </HStack>
                       </Flex>
