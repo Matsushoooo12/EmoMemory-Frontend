@@ -31,21 +31,38 @@ import { Post } from "../../../types/post";
 import { deletePost, getAllPosts, updatePost } from "../../../api/post";
 import { AuthContext } from "../../../App";
 import { createLike, deleteLike } from "../../../api/like";
+import { Like } from "../../../types/like";
+import { User } from "../../../types/user";
 
 export const Index: VFC = memo(() => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const { currentUser } = useContext<any>(AuthContext);
 
-  const [value, setValue] = useState({
-    id: 0,
-    userId: 0,
-    emotion: "",
-    content: "",
-    createdAt: "",
-    likesNumber: 0,
-  });
   const [emotion, setEmotion] = useState("");
+  const [modalEmotion, setModalEmotion] = useState("");
+  const [content, setContent] = useState("");
+  const [id, setId] = useState(0);
+  const [createdAt, setCreatedAt] = useState("");
+  const [user, setUser] = useState<Pick<User, "email" | "name" | "id">>();
+  const [likes, setLikes] = useState<Like[]>([]);
+
+  const onClickModalPost = (
+    id: number,
+    emotion: string,
+    content: string,
+    createdAt: string,
+    user: Pick<User, "email" | "name" | "id">,
+    likes: Like[]
+  ) => {
+    setId(id);
+    setModalEmotion(emotion);
+    setContent(content);
+    setCreatedAt(createdAt);
+    setUser(user);
+    setLikes(likes);
+    onOpen();
+  };
 
   const onClickAll = () => {
     setEmotion("");
@@ -68,25 +85,6 @@ export const Index: VFC = memo(() => {
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const onClickModalPost = (
-    id: number,
-    userId: number,
-    emotion: string,
-    content: string,
-    createdAt: string,
-    likesNumber: number
-  ) => {
-    setValue({
-      id: id,
-      userId: userId,
-      emotion: emotion,
-      content: content,
-      createdAt: createdAt,
-      likesNumber: likesNumber,
-    });
-    onOpen();
-  };
 
   const handleGetAllPosts = async () => {
     try {
@@ -142,26 +140,27 @@ export const Index: VFC = memo(() => {
     }
   };
 
-  const generateParams = () => {
-    const updateParams = {
-      content: value.content,
-      emotion: value.emotion,
-    };
-    return updateParams;
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
   };
 
-  const handleChange = (e: any) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    });
+  const handleEmotionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmotion(e.target.value);
+  };
+
+  const generateParams = () => {
+    const updateParams = {
+      content: content,
+      emotion: modalEmotion,
+    };
+    return updateParams;
   };
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const params = generateParams();
     try {
-      const res = await updatePost(value.id, params);
+      const res = await updatePost(id, params);
       console.log(res.data);
       handleGetAllPosts();
       // eslint-disable-next-line no-restricted-globals
@@ -171,10 +170,10 @@ export const Index: VFC = memo(() => {
     }
   };
 
-  const handleDelete = async (item: any) => {
-    console.log("click", item.id);
+  const handleDelete = async (id: number) => {
+    console.log("click", id);
     try {
-      const res = await deletePost(item.id);
+      const res = await deletePost(id);
       console.log(res.data);
       handleGetAllPosts();
       onClose();
@@ -183,9 +182,9 @@ export const Index: VFC = memo(() => {
     }
   };
 
-  const handleCreateLike = async (item: Post) => {
+  const handleCreateLike = async (id: number) => {
     try {
-      const res = await createLike(item.id);
+      const res = await createLike(id);
       console.log(res.data);
       handleGetAllPosts();
     } catch (e) {
@@ -193,9 +192,9 @@ export const Index: VFC = memo(() => {
     }
   };
 
-  const handleDeleteLike = async (item: Post) => {
+  const handleDeleteLike = async (id: number) => {
     try {
-      const res = await deleteLike(item.id);
+      const res = await deleteLike(id);
       console.log(res.data);
       handleGetAllPosts();
     } catch (e) {
@@ -296,11 +295,11 @@ export const Index: VFC = memo(() => {
                       onClick={() =>
                         onClickModalPost(
                           post.id,
-                          post.user.id,
                           post.emotion,
                           post.content,
                           post.createdAt,
-                          post.likes.length
+                          post.user,
+                          post.likes
                         )
                       }
                     ></Textarea>
@@ -318,7 +317,7 @@ export const Index: VFC = memo(() => {
                               alt="LikeButton"
                               width="24px"
                               height="24px"
-                              onClick={() => handleDeleteLike(post)}
+                              onClick={() => handleDeleteLike(post.id)}
                             />
                           ) : (
                             <Image
@@ -327,7 +326,7 @@ export const Index: VFC = memo(() => {
                               width="24px"
                               height="24px"
                               opacity={0.3}
-                              onClick={() => handleCreateLike(post)}
+                              onClick={() => handleCreateLike(post.id)}
                             />
                           )}
                           <Text fontSize="12px">{post.likes.length}</Text>
@@ -362,11 +361,11 @@ export const Index: VFC = memo(() => {
                       onClick={() =>
                         onClickModalPost(
                           post.id,
-                          post.user.id,
                           post.emotion,
                           post.content,
                           post.createdAt,
-                          post.likes.length
+                          post.user,
+                          post.likes
                         )
                       }
                     ></Textarea>
@@ -384,7 +383,7 @@ export const Index: VFC = memo(() => {
                               alt="LikeButton"
                               width="24px"
                               height="24px"
-                              onClick={() => handleDeleteLike(post)}
+                              onClick={() => handleDeleteLike(post.id)}
                             />
                           ) : (
                             <Image
@@ -393,7 +392,7 @@ export const Index: VFC = memo(() => {
                               width="24px"
                               height="24px"
                               opacity={0.3}
-                              onClick={() => handleCreateLike(post)}
+                              onClick={() => handleCreateLike(post.id)}
                             />
                           )}
                           <Text fontSize="12px">{post.likes.length}</Text>
@@ -411,9 +410,9 @@ export const Index: VFC = memo(() => {
         <ModalOverlay />
         <ModalContent bg="none" border="none" shadow="none">
           <ModalCloseButton mr="64px" mt="100px" />
-          {currentUser.id === value.userId ? (
+          {currentUser.id === user?.id ? (
             <form>
-              {value.emotion === "happy" && (
+              {modalEmotion === "happy" && (
                 <Box
                   bgImage={HappyCard}
                   bgPosition="center"
@@ -427,7 +426,7 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleChange}
+                      onChange={handleEmotionChange}
                     />
                     <Textarea
                       resize="none"
@@ -435,8 +434,8 @@ export const Index: VFC = memo(() => {
                       className="textarea note happy"
                       width="60%"
                       height="200px"
-                      onChange={handleChange}
-                      value={value.content}
+                      onChange={handleContentChange}
+                      value={content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -446,24 +445,24 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
                             src={LikeButton}
                             alt="LikeButton"
-                            width="32px"
-                            height="32px"
+                            width="24px"
+                            height="24px"
                           />
-                          <Text fontSize="14px">{value.likesNumber}</Text>
+                          <Text fontSize="14px">{likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "anger" && (
+              {modalEmotion === "anger" && (
                 <Box
                   bgImage={AngerCard}
                   bgPosition="center"
@@ -477,7 +476,7 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleChange}
+                      onChange={handleEmotionChange}
                     />
                     <Textarea
                       resize="none"
@@ -485,8 +484,8 @@ export const Index: VFC = memo(() => {
                       className="textarea note anger"
                       width="60%"
                       height="200px"
-                      onChange={handleChange}
-                      value={value.content}
+                      onChange={handleContentChange}
+                      value={content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -496,24 +495,24 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
                             src={LikeButton}
                             alt="LikeButton"
-                            width="32px"
-                            height="32px"
+                            width="24px"
+                            height="24px"
                           />
-                          <Text fontSize="14px">{value.likesNumber}</Text>
+                          <Text fontSize="14px">{likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "sorrow" && (
+              {modalEmotion === "sorrow" && (
                 <Box
                   bgImage={SorrowCard}
                   bgPosition="center"
@@ -527,7 +526,7 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleChange}
+                      onChange={handleEmotionChange}
                     />
                     <Textarea
                       resize="none"
@@ -535,8 +534,8 @@ export const Index: VFC = memo(() => {
                       className="textarea note sorrow"
                       width="60%"
                       height="200px"
-                      onChange={handleChange}
-                      value={value.content}
+                      onChange={handleContentChange}
+                      value={content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -546,24 +545,24 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
                             src={LikeButton}
                             alt="LikeButton"
-                            width="32px"
-                            height="32px"
+                            width="24px"
+                            height="24px"
                           />
-                          <Text fontSize="14px">{value.likesNumber}</Text>
+                          <Text fontSize="14px">{likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "fun" && (
+              {modalEmotion === "fun" && (
                 <Box
                   bgImage={FunCard}
                   bgPosition="center"
@@ -577,7 +576,7 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleChange}
+                      onChange={handleEmotionChange}
                     />
                     <Textarea
                       resize="none"
@@ -585,8 +584,8 @@ export const Index: VFC = memo(() => {
                       className="textarea note fun"
                       width="60%"
                       height="200px"
-                      onChange={handleChange}
-                      value={value.content}
+                      onChange={handleContentChange}
+                      value={content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -596,17 +595,17 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
                             src={LikeButton}
                             alt="LikeButton"
-                            width="32px"
-                            height="32px"
+                            width="24px"
+                            height="24px"
                           />
-                          <Text fontSize="14px">{value.likesNumber}</Text>
+                          <Text fontSize="14px">{likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -628,7 +627,7 @@ export const Index: VFC = memo(() => {
                     border="3px solid #47789F"
                     color="#47789F"
                     width="80px"
-                    onClick={() => handleDelete(value)}
+                    onClick={() => handleDelete(id)}
                   >
                     削除
                   </Button>
@@ -637,7 +636,7 @@ export const Index: VFC = memo(() => {
             </form>
           ) : (
             <>
-              {value.emotion === "happy" && (
+              {modalEmotion === "happy" && (
                 <Box
                   bgImage={HappyCard}
                   bgPosition="center"
@@ -645,11 +644,11 @@ export const Index: VFC = memo(() => {
                   bgRepeat="no-repeat"
                   width="400px"
                   height="400px"
-                  onClick={onClose}
                   cursor="pointer"
                 >
                   <Box textAlign="center" pt="150px">
                     <Textarea
+                      onClick={onClose}
                       cursor="pointer"
                       resize="none"
                       variant="unstyled"
@@ -657,7 +656,7 @@ export const Index: VFC = memo(() => {
                       width="60%"
                       height="200px"
                       readOnly
-                      defaultValue={value.content}
+                      defaultValue={content}
                     ></Textarea>
                     <Flex
                       justify="space-between"
@@ -666,24 +665,24 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
                             src={LikeButton}
                             alt="LikeButton"
-                            width="32px"
-                            height="32px"
+                            width="24px"
+                            height="24px"
                           />
-                          <Text fontSize="14px">{value.likesNumber}</Text>
+                          <Text fontSize="14px">{likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "anger" && (
+              {modalEmotion === "anger" && (
                 <Box
                   bgImage={AngerCard}
                   bgPosition="center"
@@ -691,11 +690,11 @@ export const Index: VFC = memo(() => {
                   bgRepeat="no-repeat"
                   width="400px"
                   height="400px"
-                  onClick={onClose}
                   cursor="pointer"
                 >
                   <Box textAlign="center" pt="150px">
                     <Textarea
+                      onClick={onClose}
                       cursor="pointer"
                       resize="none"
                       variant="unstyled"
@@ -703,7 +702,7 @@ export const Index: VFC = memo(() => {
                       width="60%"
                       height="200px"
                       readOnly
-                      defaultValue={value.content}
+                      defaultValue={content}
                     ></Textarea>
                     <Flex
                       justify="space-between"
@@ -712,24 +711,24 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
                             src={LikeButton}
                             alt="LikeButton"
-                            width="32px"
-                            height="32px"
+                            width="24px"
+                            height="24px"
                           />
-                          <Text fontSize="14px">{value.likesNumber}</Text>
+                          <Text fontSize="14px">{likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "sorrow" && (
+              {modalEmotion === "sorrow" && (
                 <Box
                   bgImage={SorrowCard}
                   bgPosition="center"
@@ -737,11 +736,11 @@ export const Index: VFC = memo(() => {
                   bgRepeat="no-repeat"
                   width="400px"
                   height="400px"
-                  onClick={onClose}
                   cursor="pointer"
                 >
                   <Box textAlign="center" pt="150px">
                     <Textarea
+                      onClick={onClose}
                       cursor="pointer"
                       resize="none"
                       variant="unstyled"
@@ -749,7 +748,7 @@ export const Index: VFC = memo(() => {
                       width="60%"
                       height="200px"
                       readOnly
-                      defaultValue={value.content}
+                      defaultValue={content}
                     ></Textarea>
                     <Flex
                       justify="space-between"
@@ -758,24 +757,24 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
                             src={LikeButton}
                             alt="LikeButton"
-                            width="32px"
-                            height="32px"
+                            width="24px"
+                            height="24px"
                           />
-                          <Text fontSize="14px">{value.likesNumber}</Text>
+                          <Text fontSize="14px">{likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "fun" && (
+              {modalEmotion === "fun" && (
                 <Box
                   bgImage={FunCard}
                   bgPosition="center"
@@ -783,11 +782,11 @@ export const Index: VFC = memo(() => {
                   bgRepeat="no-repeat"
                   width="400px"
                   height="400px"
-                  onClick={onClose}
                   cursor="pointer"
                 >
                   <Box textAlign="center" pt="150px">
                     <Textarea
+                      onClick={onClose}
                       cursor="pointer"
                       resize="none"
                       variant="unstyled"
@@ -795,7 +794,7 @@ export const Index: VFC = memo(() => {
                       width="60%"
                       height="200px"
                       readOnly
-                      defaultValue={value.content}
+                      defaultValue={content}
                     ></Textarea>
                     <Flex
                       justify="space-between"
@@ -804,17 +803,17 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
                           <Image
                             src={LikeButton}
                             alt="LikeButton"
-                            width="32px"
-                            height="32px"
+                            width="24px"
+                            height="24px"
                           />
-                          <Text fontSize="14px">{value.likesNumber}</Text>
+                          <Text fontSize="14px">{likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
