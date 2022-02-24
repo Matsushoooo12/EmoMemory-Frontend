@@ -28,11 +28,10 @@ import { AuthContext } from "../../../App";
 import { updateUser } from "../../../api/user";
 
 export const Profile: VFC = memo(() => {
-  // const { currentUser } = useContext<any>(AuthContext);
   const { currentUser } = useContext<any>(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [emotionFace, setEmotionFace] = useState(currentUser.emotion);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(currentUser.name);
 
   const generateParams = () => {
     const userEditParams = {
