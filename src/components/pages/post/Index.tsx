@@ -63,8 +63,6 @@ export const Index: VFC = memo(() => {
     try {
       const res = await getAPost(id);
       console.log(res.data);
-      setContent(res.data.content);
-      setModalEmotion(res.data.emotion);
       setPost(res.data);
     } catch (e) {
       console.log(e);
@@ -102,31 +100,22 @@ export const Index: VFC = memo(() => {
   };
 
   // 投稿編集
-  const [modalEmotion, setModalEmotion] = useState<any>(post?.emotion);
-  const [content, setContent] = useState<any>(post?.content);
-
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
-  };
-
-  const handleEmotionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setModalEmotion(e.target.value);
-  };
-
-  const generateParams = () => {
+  const generateParams = (content: string, emotion: string) => {
     const updateParams = {
       content: content,
-      emotion: modalEmotion,
+      emotion: emotion,
     };
     return updateParams;
   };
 
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement>,
-    id: any
+    id: any,
+    content: any,
+    emotion: any
   ) => {
     e.preventDefault();
-    const params = generateParams();
+    const params = generateParams(content, emotion);
     try {
       const res = await updatePost(id, params);
       console.log(res.data);
@@ -419,7 +408,9 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleEmotionChange}
+                      onChange={(e) =>
+                        setPost({ ...post, emotion: e.target.value })
+                      }
                     />
                     <Textarea
                       resize="none"
@@ -427,8 +418,10 @@ export const Index: VFC = memo(() => {
                       className="textarea note happy"
                       width="60%"
                       height="200px"
-                      onChange={handleContentChange}
-                      value={content}
+                      onChange={(e) =>
+                        setPost({ ...post, content: e.target.value })
+                      }
+                      value={post?.content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -483,7 +476,9 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleEmotionChange}
+                      onChange={(e) =>
+                        setPost({ ...post, emotion: e.target.value })
+                      }
                     />
                     <Textarea
                       resize="none"
@@ -491,8 +486,10 @@ export const Index: VFC = memo(() => {
                       className="textarea note anger"
                       width="60%"
                       height="200px"
-                      onChange={handleContentChange}
-                      value={content}
+                      onChange={(e) =>
+                        setPost({ ...post, content: e.target.value })
+                      }
+                      value={post?.content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -547,7 +544,9 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleEmotionChange}
+                      onChange={(e) =>
+                        setPost({ ...post, emotion: e.target.value })
+                      }
                     />
                     <Textarea
                       resize="none"
@@ -555,8 +554,10 @@ export const Index: VFC = memo(() => {
                       className="textarea note sorrow"
                       width="60%"
                       height="200px"
-                      onChange={handleContentChange}
-                      value={content}
+                      onChange={(e) =>
+                        setPost({ ...post, content: e.target.value })
+                      }
+                      value={post?.content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -611,7 +612,9 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleEmotionChange}
+                      onChange={(e) =>
+                        setPost({ ...post, emotion: e.target.value })
+                      }
                     />
                     <Textarea
                       resize="none"
@@ -619,8 +622,10 @@ export const Index: VFC = memo(() => {
                       className="textarea note fun"
                       width="60%"
                       height="200px"
-                      onChange={handleContentChange}
-                      value={content}
+                      onChange={(e) =>
+                        setPost({ ...post, content: e.target.value })
+                      }
+                      value={post?.content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -668,7 +673,9 @@ export const Index: VFC = memo(() => {
                     bg="#47789F"
                     color="white"
                     width="80px"
-                    onClick={(e) => handleSubmit(e, post?.id)}
+                    onClick={(e) =>
+                      handleSubmit(e, post?.id, post?.content, post?.emotion)
+                    }
                   >
                     編集
                   </Button>
