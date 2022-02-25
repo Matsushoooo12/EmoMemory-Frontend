@@ -12,10 +12,9 @@ import FunFace from "../../images/楽01.png";
 import { signOut } from "../../api/auth";
 
 export const Header: VFC = memo(() => {
-  const { currentUser, setIsSignedIn } = useContext<any>(AuthContext);
+  const { currentUser, setIsSignedIn, loading, isSignedIn } =
+    useContext<any>(AuthContext);
   const history = useHistory();
-  // ログイン状態によってメニュー切り替え
-  const { loading, isSignedIn } = useContext<any>(AuthContext);
 
   // ログアウト関数
   const handleSignOut = async () => {
