@@ -60,13 +60,13 @@ export const Header: VFC = memo(() => {
 
   // ログインユーザーのヘッダーFace
   const headerProfileFace = () => {
-    if (currentUser.emotion === "happy") {
+    if (currentUser?.emotion === "happy") {
       return HappyFace;
-    } else if (currentUser.emotion === "anger") {
+    } else if (currentUser?.emotion === "anger") {
       return AngerFace;
-    } else if (currentUser.emotion === "sorrow") {
+    } else if (currentUser?.emotion === "sorrow") {
       return SorrowFace;
-    } else if (currentUser.emotion === "fun") {
+    } else if (currentUser?.emotion === "fun") {
       return FunFace;
     }
   };
