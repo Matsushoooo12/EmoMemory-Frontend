@@ -17,7 +17,8 @@ export const AuthContext = createContext({});
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<User>();
+  const [currentUser, setCurrentUser] =
+    useState<Pick<User, "id" | "name" | "email" | "emotion" | "posts">>();
 
   const handleGetCurrentUser = async () => {
     try {
