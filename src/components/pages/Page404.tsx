@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState, VFC } from "react";
+import { memo, useEffect, useState, VFC } from "react";
 import { Text, Box, Heading } from "@chakra-ui/react";
 
 import HappyCard from "../../images/喜付箋.png";
