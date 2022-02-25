@@ -130,9 +130,12 @@ export const Profile: VFC = memo(() => {
         Email : {currentUser.email}
       </Text>
       <Flex mt="16px" mb="40px" justify="space-between" align="center">
-        <Text fontSize="16px" fontWeight="bold">
-          post : 27 ・ like : 23
-        </Text>
+        <Flex fontSize="16px" fontWeight="bold">
+          <HStack spacing="16px">
+            <Text>post : {currentUser.posts.length}</Text>
+            <Text>like : {currentUser.likes}</Text>
+          </HStack>
+        </Flex>
         <Button
           onClick={onOpen}
           _hover={{ opacity: 0.8 }}
