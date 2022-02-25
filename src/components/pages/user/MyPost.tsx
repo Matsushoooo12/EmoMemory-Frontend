@@ -115,7 +115,7 @@ export const MyPost: VFC = memo(() => {
   return (
     <>
       <Box position="fixed" left="0" right="0" margin="auto" zIndex="50">
-        <Flex justify="center" mx="40px" mb="40px">
+        <Flex justify="center" mx="40px" mb="40px" mt="16px">
           <HStack spacing="24px">
             <Flex
               bg="red"
@@ -170,7 +170,15 @@ export const MyPost: VFC = memo(() => {
           </HStack>
         </Flex>
       </Box>
-      <Box pt="100px">
+      <Box
+        pt="100px"
+        width="100%"
+        height="100%"
+        bg="#EDF2F6"
+        pb="80px"
+        borderRadius="md"
+        shadow="md"
+      >
         {currentUser.posts.map(
           (post: {
             emotion: string;
