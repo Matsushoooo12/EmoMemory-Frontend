@@ -245,7 +245,7 @@ export const Profile: VFC = memo(() => {
                           width="80px"
                           onClick={(e) => handleUpdateUser(e)}
                         >
-                          投稿
+                          更新
                         </Button>
                         <Button
                           border="3px solid #47789F"
