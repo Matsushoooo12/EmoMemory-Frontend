@@ -28,23 +28,120 @@ import FunFace from "../../../images/楽01.png";
 import FunCard from "../../../images/楽付箋.png";
 import LikeButton from "../../../images/それなスタンプ.png";
 import { Post } from "../../../types/post";
-import { deletePost, getAllPosts, updatePost } from "../../../api/post";
+import {
+  deletePost,
+  getAllPosts,
+  getAPost,
+  updatePost,
+} from "../../../api/post";
 import { AuthContext } from "../../../App";
+import { createLike, deleteLike } from "../../../api/like";
 
 export const Index: VFC = memo(() => {
-  const [posts, setPosts] = useState<Post[]>([]);
-
   const { currentUser } = useContext<any>(AuthContext);
 
-  const [value, setValue] = useState({
-    id: 0,
-    userId: 0,
-    emotion: "",
-    content: "",
-    createdAt: "",
-  });
-  const [emotion, setEmotion] = useState("");
+  // 投稿一覧
+  const [posts, setPosts] = useState<Post[]>([]);
+  const handleGetAllPosts = async () => {
+    try {
+      const res = await getAllPosts();
+      console.log(res);
+      setPosts(res.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
+  useEffect(() => {
+    handleGetAllPosts();
+  }, []);
+
+  // 投稿詳細
+  const [post, setPost] = useState<Post>();
+
+  const handleGetDetailPost = async (id: number) => {
+    try {
+      const res = await getAPost(id);
+      console.log(res.data);
+      setPost(res.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // いいね機能
+  const handleCreateLike = async (id: number) => {
+    try {
+      const res = await createLike(id);
+      console.log(res.data);
+      handleGetDetailPost(id);
+      handleGetAllPosts();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleDeleteLike = async (id: number) => {
+    try {
+      const res = await deleteLike(id);
+      console.log(res.data);
+      handleGetDetailPost(id);
+      handleGetAllPosts();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // モーダル
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const onClickModalPost = (id: number) => {
+    handleGetDetailPost(id);
+    onOpen();
+  };
+
+  // 投稿編集
+  const generateParams = (content: string, emotion: string) => {
+    const updateParams = {
+      content: content,
+      emotion: emotion,
+    };
+    return updateParams;
+  };
+
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: any,
+    content: any,
+    emotion: any
+  ) => {
+    e.preventDefault();
+    const params = generateParams(content, emotion);
+    try {
+      const res = await updatePost(id, params);
+      console.log(res.data);
+      handleGetAllPosts();
+      // eslint-disable-next-line no-restricted-globals
+      location.reload();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 投稿削除
+  const handleDelete = async (id: any) => {
+    console.log("click", id);
+    try {
+      const res = await deletePost(id);
+      console.log(res.data);
+      handleGetAllPosts();
+      onClose();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // カード絞り込み
+  const [emotion, setEmotion] = useState("");
   const onClickAll = () => {
     setEmotion("");
   };
@@ -64,39 +161,6 @@ export const Index: VFC = memo(() => {
   const onClickFun = () => {
     setEmotion("fun");
   };
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const onClickModalPost = (
-    id: number,
-    userId: number,
-    emotion: string,
-    content: string,
-    createdAt: string
-  ) => {
-    setValue({
-      id: id,
-      userId: userId,
-      emotion: emotion,
-      content: content,
-      createdAt: createdAt,
-    });
-    onOpen();
-  };
-
-  const handleGetAllPosts = async () => {
-    try {
-      const res = await getAllPosts();
-      console.log(res);
-      setPosts(res.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    handleGetAllPosts();
-  }, []);
 
   const cardColor = (emotion: string) => {
     if (emotion === "happy") {
@@ -135,47 +199,6 @@ export const Index: VFC = memo(() => {
       return "textarea note sorrow index";
     } else if (emotion === "fun") {
       return "textarea note fun index";
-    }
-  };
-
-  const generateParams = () => {
-    const updateParams = {
-      content: value.content,
-      emotion: value.emotion,
-    };
-    return updateParams;
-  };
-
-  const handleChange = (e: any) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const params = generateParams();
-    try {
-      const res = await updatePost(value.id, params);
-      console.log(res.data);
-      handleGetAllPosts();
-      // eslint-disable-next-line no-restricted-globals
-      location.reload();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const handleDelete = async (item: any) => {
-    console.log("click", item.id);
-    try {
-      const res = await deletePost(item.id);
-      console.log(res.data);
-      handleGetAllPosts();
-      onClose();
-    } catch (e) {
-      console.log(e);
     }
   };
   return (
@@ -256,15 +279,6 @@ export const Index: VFC = memo(() => {
                   borderRadius="md"
                   justifyContent="center"
                   cursor="pointer"
-                  onClick={() =>
-                    onClickModalPost(
-                      post.id,
-                      post.user.id,
-                      post.emotion,
-                      post.content,
-                      post.createdAt
-                    )
-                  }
                 >
                   <Box textAlign="center">
                     <Textarea
@@ -278,6 +292,7 @@ export const Index: VFC = memo(() => {
                       height="140px"
                       fontSize="12px"
                       defaultValue={post.content}
+                      onClick={() => onClickModalPost(post.id)}
                     ></Textarea>
                     <Flex justify="space-between" align="center">
                       <Text fontSize="12px">
@@ -285,13 +300,27 @@ export const Index: VFC = memo(() => {
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="24px"
-                            height="24px"
-                          />
-                          <Text fontSize="12px">12</Text>
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post.id)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post.id)}
+                            />
+                          )}
+                          <Text fontSize="12px">{post.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -306,15 +335,6 @@ export const Index: VFC = memo(() => {
                   border={cardBorderColor(post.emotion, post.user.id)}
                   borderRadius="md"
                   justifyContent="center"
-                  onClick={() =>
-                    onClickModalPost(
-                      post.id,
-                      post.user.id,
-                      post.emotion,
-                      post.content,
-                      post.createdAt
-                    )
-                  }
                   cursor="pointer"
                 >
                   <Box textAlign="center">
@@ -329,6 +349,7 @@ export const Index: VFC = memo(() => {
                       height="140px"
                       fontSize="12px"
                       defaultValue={post.content}
+                      onClick={() => onClickModalPost(post.id)}
                     ></Textarea>
                     <Flex justify="space-between" align="center">
                       <Text fontSize="12px">
@@ -336,13 +357,27 @@ export const Index: VFC = memo(() => {
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="24px"
-                            height="24px"
-                          />
-                          <Text fontSize="12px">12</Text>
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post.id)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post.id)}
+                            />
+                          )}
+                          <Text fontSize="12px">{post.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -357,9 +392,9 @@ export const Index: VFC = memo(() => {
         <ModalOverlay />
         <ModalContent bg="none" border="none" shadow="none">
           <ModalCloseButton mr="64px" mt="100px" />
-          {currentUser.id === value.userId ? (
+          {currentUser.id === post?.user.id ? (
             <form>
-              {value.emotion === "happy" && (
+              {post?.emotion === "happy" && (
                 <Box
                   bgImage={HappyCard}
                   bgPosition="center"
@@ -373,7 +408,9 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setPost({ ...post, emotion: e.target.value })
+                      }
                     />
                     <Textarea
                       resize="none"
@@ -381,8 +418,10 @@ export const Index: VFC = memo(() => {
                       className="textarea note happy"
                       width="60%"
                       height="200px"
-                      onChange={handleChange}
-                      value={value.content}
+                      onChange={(e) =>
+                        setPost({ ...post, content: e.target.value })
+                      }
+                      value={post?.content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -392,24 +431,38 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="32px"
-                            height="32px"
-                          />
-                          <Text fontSize="14px">12</Text>
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post.id)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post.id)}
+                            />
+                          )}
+                          <Text fontSize="14px">{post?.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "anger" && (
+              {post?.emotion === "anger" && (
                 <Box
                   bgImage={AngerCard}
                   bgPosition="center"
@@ -423,7 +476,9 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setPost({ ...post, emotion: e.target.value })
+                      }
                     />
                     <Textarea
                       resize="none"
@@ -431,8 +486,10 @@ export const Index: VFC = memo(() => {
                       className="textarea note anger"
                       width="60%"
                       height="200px"
-                      onChange={handleChange}
-                      value={value.content}
+                      onChange={(e) =>
+                        setPost({ ...post, content: e.target.value })
+                      }
+                      value={post?.content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -442,24 +499,38 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="32px"
-                            height="32px"
-                          />
-                          <Text fontSize="14px">12</Text>
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post.id)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post.id)}
+                            />
+                          )}
+                          <Text fontSize="14px">{post?.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "sorrow" && (
+              {post?.emotion === "sorrow" && (
                 <Box
                   bgImage={SorrowCard}
                   bgPosition="center"
@@ -473,7 +544,9 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setPost({ ...post, emotion: e.target.value })
+                      }
                     />
                     <Textarea
                       resize="none"
@@ -481,8 +554,10 @@ export const Index: VFC = memo(() => {
                       className="textarea note sorrow"
                       width="60%"
                       height="200px"
-                      onChange={handleChange}
-                      value={value.content}
+                      onChange={(e) =>
+                        setPost({ ...post, content: e.target.value })
+                      }
+                      value={post?.content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -492,24 +567,38 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="32px"
-                            height="32px"
-                          />
-                          <Text fontSize="14px">12</Text>
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post.id)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post.id)}
+                            />
+                          )}
+                          <Text fontSize="14px">{post?.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "fun" && (
+              {post?.emotion === "fun" && (
                 <Box
                   bgImage={FunCard}
                   bgPosition="center"
@@ -523,7 +612,9 @@ export const Index: VFC = memo(() => {
                     <Input
                       type="hidden"
                       name="emotion"
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setPost({ ...post, emotion: e.target.value })
+                      }
                     />
                     <Textarea
                       resize="none"
@@ -531,8 +622,10 @@ export const Index: VFC = memo(() => {
                       className="textarea note fun"
                       width="60%"
                       height="200px"
-                      onChange={handleChange}
-                      value={value.content}
+                      onChange={(e) =>
+                        setPost({ ...post, content: e.target.value })
+                      }
+                      value={post?.content}
                       name="content"
                     ></Textarea>
                     <Flex
@@ -542,17 +635,31 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="32px"
-                            height="32px"
-                          />
-                          <Text fontSize="14px">12</Text>
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post.id)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post.id)}
+                            />
+                          )}
+                          <Text fontSize="14px">{post?.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
@@ -566,7 +673,9 @@ export const Index: VFC = memo(() => {
                     bg="#47789F"
                     color="white"
                     width="80px"
-                    onClick={(e) => handleSubmit(e)}
+                    onClick={(e) =>
+                      handleSubmit(e, post?.id, post?.content, post?.emotion)
+                    }
                   >
                     編集
                   </Button>
@@ -574,7 +683,7 @@ export const Index: VFC = memo(() => {
                     border="3px solid #47789F"
                     color="#47789F"
                     width="80px"
-                    onClick={() => handleDelete(value)}
+                    onClick={() => handleDelete(post?.id)}
                   >
                     削除
                   </Button>
@@ -583,7 +692,7 @@ export const Index: VFC = memo(() => {
             </form>
           ) : (
             <>
-              {value.emotion === "happy" && (
+              {post?.emotion === "happy" && (
                 <Box
                   bgImage={HappyCard}
                   bgPosition="center"
@@ -591,11 +700,11 @@ export const Index: VFC = memo(() => {
                   bgRepeat="no-repeat"
                   width="400px"
                   height="400px"
-                  onClick={onClose}
                   cursor="pointer"
                 >
                   <Box textAlign="center" pt="150px">
                     <Textarea
+                      onClick={onClose}
                       cursor="pointer"
                       resize="none"
                       variant="unstyled"
@@ -603,7 +712,7 @@ export const Index: VFC = memo(() => {
                       width="60%"
                       height="200px"
                       readOnly
-                      defaultValue={value.content}
+                      defaultValue={post?.content}
                     ></Textarea>
                     <Flex
                       justify="space-between"
@@ -612,24 +721,38 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="32px"
-                            height="32px"
-                          />
-                          <Text fontSize="14px">12</Text>
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post.id)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post.id)}
+                            />
+                          )}
+                          <Text fontSize="14px">{post?.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "anger" && (
+              {post?.emotion === "anger" && (
                 <Box
                   bgImage={AngerCard}
                   bgPosition="center"
@@ -637,11 +760,11 @@ export const Index: VFC = memo(() => {
                   bgRepeat="no-repeat"
                   width="400px"
                   height="400px"
-                  onClick={onClose}
                   cursor="pointer"
                 >
                   <Box textAlign="center" pt="150px">
                     <Textarea
+                      onClick={onClose}
                       cursor="pointer"
                       resize="none"
                       variant="unstyled"
@@ -649,7 +772,7 @@ export const Index: VFC = memo(() => {
                       width="60%"
                       height="200px"
                       readOnly
-                      defaultValue={value.content}
+                      defaultValue={post?.content}
                     ></Textarea>
                     <Flex
                       justify="space-between"
@@ -658,24 +781,38 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="32px"
-                            height="32px"
-                          />
-                          <Text fontSize="14px">12</Text>
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post.id)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post.id)}
+                            />
+                          )}
+                          <Text fontSize="14px">{post?.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "sorrow" && (
+              {post?.emotion === "sorrow" && (
                 <Box
                   bgImage={SorrowCard}
                   bgPosition="center"
@@ -683,11 +820,11 @@ export const Index: VFC = memo(() => {
                   bgRepeat="no-repeat"
                   width="400px"
                   height="400px"
-                  onClick={onClose}
                   cursor="pointer"
                 >
                   <Box textAlign="center" pt="150px">
                     <Textarea
+                      onClick={onClose}
                       cursor="pointer"
                       resize="none"
                       variant="unstyled"
@@ -695,7 +832,7 @@ export const Index: VFC = memo(() => {
                       width="60%"
                       height="200px"
                       readOnly
-                      defaultValue={value.content}
+                      defaultValue={post?.content}
                     ></Textarea>
                     <Flex
                       justify="space-between"
@@ -704,24 +841,38 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="32px"
-                            height="32px"
-                          />
-                          <Text fontSize="14px">12</Text>
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post.id)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post.id)}
+                            />
+                          )}
+                          <Text fontSize="14px">{post?.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
                   </Box>
                 </Box>
               )}
-              {value.emotion === "fun" && (
+              {post?.emotion === "fun" && (
                 <Box
                   bgImage={FunCard}
                   bgPosition="center"
@@ -729,11 +880,11 @@ export const Index: VFC = memo(() => {
                   bgRepeat="no-repeat"
                   width="400px"
                   height="400px"
-                  onClick={onClose}
                   cursor="pointer"
                 >
                   <Box textAlign="center" pt="150px">
                     <Textarea
+                      onClick={onClose}
                       cursor="pointer"
                       resize="none"
                       variant="unstyled"
@@ -741,7 +892,7 @@ export const Index: VFC = memo(() => {
                       width="60%"
                       height="200px"
                       readOnly
-                      defaultValue={value.content}
+                      defaultValue={post?.content}
                     ></Textarea>
                     <Flex
                       justify="space-between"
@@ -750,17 +901,31 @@ export const Index: VFC = memo(() => {
                       px="80px"
                     >
                       <Text fontSize="14px">
-                        {dayjs(value.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
                       </Text>
                       <Flex align="center">
                         <HStack spacing={1}>
-                          <Image
-                            src={LikeButton}
-                            alt="LikeButton"
-                            width="32px"
-                            height="32px"
-                          />
-                          <Text fontSize="14px">12</Text>
+                          {post.likes?.find(
+                            (like) => like.userId === currentUser.id
+                          ) ? (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              onClick={() => handleDeleteLike(post.id)}
+                            />
+                          ) : (
+                            <Image
+                              src={LikeButton}
+                              alt="LikeButton"
+                              width="24px"
+                              height="24px"
+                              opacity={0.3}
+                              onClick={() => handleCreateLike(post.id)}
+                            />
+                          )}
+                          <Text fontSize="14px">{post?.likes.length}</Text>
                         </HStack>
                       </Flex>
                     </Flex>
