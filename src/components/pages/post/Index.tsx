@@ -121,19 +121,20 @@ export const Index: VFC = memo(() => {
   const [emotion, setEmotion] = useState('');
 
   return (
-    <Box py="80px" width="100%" height="100%" minHeight="100vh">
-      <Box width="80%" mx="auto" mt="80px">
-        <Box
-          px={{ base: '20px', md: '80px' }}
-          position="fixed"
-          right="0"
-          left="0"
-          margin="auto"
-          zIndex="50"
-        >
-          <EmotionFaceIcons setEmotion={setEmotion} mt="0" />
-
-          <Wrap spacing="40px" justify="center">
+    <>
+      <Box py="80px" width="100%" height="100%" minHeight="100vh">
+        <Box width="80%" mx="auto" mt="80px">
+          <Box
+            px={{ base: '20px', md: '80px' }}
+            position="fixed"
+            right="0"
+            left="0"
+            margin="auto"
+            zIndex="50"
+          >
+            <EmotionFaceIcons setEmotion={setEmotion} mt="0" />
+          </Box>
+          <Wrap spacing="40px" justify="center" pt="100px">
             {posts.map((post) => (
               <PostIndexWrap
                 emotion={emotion}
@@ -163,6 +164,6 @@ export const Index: VFC = memo(() => {
           handleCreateLike={handleCreateLike}
         />
       )}
-    </Box>
+    </>
   );
 });
