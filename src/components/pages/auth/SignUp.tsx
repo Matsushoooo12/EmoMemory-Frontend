@@ -2,7 +2,6 @@ import { memo, useCallback, useContext, useState, VFC } from 'react';
 import {
   Box,
   Heading,
-  Image,
   Flex,
   Stack,
   Link,
@@ -23,6 +22,7 @@ import Cookies from 'js-cookie';
 import { SubmitButton } from '../../atoms/button/SubmitButton';
 import { ResetButton } from '../../atoms/button/ResetButton';
 import { PrimaryInput } from '../../atoms/form/PrimaryInput';
+import { AuthEmotionFaceIcon } from '../../atoms/icon/AuthEmotionFaceIcon';
 
 export const SignUp: VFC = memo(() => {
   const history = useHistory();
@@ -89,26 +89,24 @@ export const SignUp: VFC = memo(() => {
         margin="auto"
       >
         <Flex justify="space-between">
-          <Image
-            width="64px"
-            height="64px"
+          <AuthEmotionFaceIcon
+            EmotionFace={HappyFace}
+            emotionText="HappyFace"
             marginLeft="-32px"
             marginTop="-32px"
-            src={HappyFace}
-            alt="HappyFace"
+            marginRight="0"
+            marginBottom="0"
           />
-          <Image
-            width="64px"
-            height="64px"
-            src={AngerFace}
-            alt="AngerFace"
-            marginRight="-32px"
+          <AuthEmotionFaceIcon
+            EmotionFace={AngerFace}
+            emotionText="AngerFace"
+            marginLeft="0"
             marginTop="-32px"
+            marginRight="-32px"
+            marginBottom="0"
           />
         </Flex>
         <Box width="320px" mx="auto">
-          {/* {!isSendEmail ? (
-            <> */}
           <Heading
             as="h1"
             fontSize="32px"
@@ -201,19 +199,19 @@ export const SignUp: VFC = memo(() => {
           </form>
         </Box>
         <Flex justify="space-between">
-          <Image
-            width="64px"
-            height="64px"
+          <AuthEmotionFaceIcon
+            EmotionFace={SorrowFace}
+            emotionText="SorrowFace"
             marginLeft="-32px"
+            marginTop="0"
+            marginRight="0"
             marginBottom="-32px"
-            src={SorrowFace}
-            alt="SorrowFace"
           />
-          <Image
-            width="64px"
-            height="64px"
-            src={FunFace}
-            alt="FunFace"
+          <AuthEmotionFaceIcon
+            EmotionFace={FunFace}
+            emotionText="FunFace"
+            marginLeft="0"
+            marginTop="0"
             marginRight="-32px"
             marginBottom="-32px"
           />
