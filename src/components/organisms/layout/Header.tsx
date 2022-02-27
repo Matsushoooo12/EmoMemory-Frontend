@@ -1,4 +1,4 @@
-import { memo, useCallback, useContext, VFC } from "react";
+import { memo, useCallback, useContext, VFC } from 'react';
 import {
   Flex,
   Link,
@@ -7,22 +7,23 @@ import {
   Image,
   Text,
   useDisclosure,
-} from "@chakra-ui/react";
-import { useHistory } from "react-router-dom";
-import Cookies from "js-cookie";
+} from '@chakra-ui/react';
+import { useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
-import { AuthContext } from "../../../App";
-import headerLogo from "../../../images/logo.png";
-import HappyFace from "../../../images/喜01.png";
-import AngerFace from "../../../images/怒01.png";
-import SorrowFace from "../../../images/哀01.png";
-import FunFace from "../../../images/楽01.png";
-import { signOut } from "../../../api/auth";
-import { MenuIconButton } from "../../atoms/button/MenuIconButton";
-import { MenuDrawer } from "../../molecules/MenuDrawer";
+import { AuthContext } from '../../../App';
+import headerLogo from '../../../images/logo.png';
+import HappyFace from '../../../images/HappyFace.png';
+import AngerFace from '../../../images/AngerFace.png';
+import SorrowFace from '../../../images/SorrowFace.png';
+import FunFace from '../../../images/FunFace.png';
+import { signOut } from '../../../api/auth';
+import { MenuIconButton } from '../../atoms/button/MenuIconButton';
+import { MenuDrawer } from '../../molecules/MenuDrawer';
 
 export const Header: VFC = memo(() => {
   const { currentUser, setIsSignedIn, loading, isSignedIn } =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     useContext<any>(AuthContext);
   const history = useHistory();
 
@@ -32,15 +33,15 @@ export const Header: VFC = memo(() => {
       const res = await signOut();
 
       if (res.data.success) {
-        Cookies.remove("_access_token");
-        Cookies.remove("_client");
-        Cookies.remove("_uid");
+        Cookies.remove('_access_token');
+        Cookies.remove('_client');
+        Cookies.remove('_uid');
 
         setIsSignedIn(false);
-        history.push("/signin");
-        console.log("succeeded in sign out");
+        history.push('/signin');
+        console.log('succeeded in sign out');
       } else {
-        console.log("failed in sign out");
+        console.log('failed in sign out');
       }
     } catch (e) {
       console.log(e);
@@ -49,18 +50,18 @@ export const Header: VFC = memo(() => {
 
   // リンク遷移関数
   const onClickSignUp = useCallback(() => {
-    history.push("/signup");
+    history.push('/signup');
   }, [history]);
   const onClickSignIn = useCallback(() => {
-    history.push("/signin");
+    history.push('/signin');
   }, [history]);
 
   const onClickHome = useCallback(() => {
-    history.push("/");
+    history.push('/');
   }, [history]);
 
   const onClickIndex = useCallback(() => {
-    history.push("/index");
+    history.push('/index');
   }, [history]);
 
   const onClickProfile = useCallback(() => {
@@ -69,13 +70,13 @@ export const Header: VFC = memo(() => {
 
   // ログインユーザーのヘッダーFace
   const headerProfileFace = () => {
-    if (currentUser?.emotion === "happy") {
+    if (currentUser?.emotion === 'happy') {
       return HappyFace;
-    } else if (currentUser?.emotion === "anger") {
+    } else if (currentUser?.emotion === 'anger') {
       return AngerFace;
-    } else if (currentUser?.emotion === "sorrow") {
+    } else if (currentUser?.emotion === 'sorrow') {
       return SorrowFace;
-    } else if (currentUser?.emotion === "fun") {
+    } else if (currentUser?.emotion === 'fun') {
       return FunFace;
     }
   };
@@ -145,14 +146,14 @@ export const Header: VFC = memo(() => {
         justify="space-between"
         height="80px"
         width="100%"
-        px={{ base: "40px", md: "80px" }}
+        px={{ base: '40px', md: '80px' }}
         position="fixed"
         zIndex="100"
       >
         <Flex
           align="center"
           as="a"
-          _hover={{ cursor: "pointer" }}
+          _hover={{ cursor: 'pointer' }}
           onClick={onClickHome}
         >
           <Image width="140px" src={headerLogo} alt="HeaderLogo" />
@@ -160,7 +161,7 @@ export const Header: VFC = memo(() => {
         <Flex
           align="center"
           fontSize="16px"
-          display={{ base: "none", md: "flex" }}
+          display={{ base: 'none', md: 'flex' }}
         >
           <HStack spacing="40px">
             <HeaderMenus />
