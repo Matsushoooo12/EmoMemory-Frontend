@@ -109,6 +109,7 @@ export const Home: VFC = memo(() => {
             content={content}
             handleSubmit={handleSubmit}
             handleReset={handleReset}
+            textareaStyle="textarea note happy"
           />
         )}
         {emotion === 'anger' && (
@@ -119,6 +120,7 @@ export const Home: VFC = memo(() => {
             content={content}
             handleSubmit={handleSubmit}
             handleReset={handleReset}
+            textareaStyle="textarea note anger"
           />
         )}
         {emotion === 'sorrow' && (
@@ -129,6 +131,7 @@ export const Home: VFC = memo(() => {
             content={content}
             handleSubmit={handleSubmit}
             handleReset={handleReset}
+            textareaStyle="textarea note sorrow"
           />
         )}
         {emotion === 'fun' && (
@@ -139,6 +142,7 @@ export const Home: VFC = memo(() => {
             content={content}
             handleSubmit={handleSubmit}
             handleReset={handleReset}
+            textareaStyle="textarea note fun"
           />
         )}
       </Box>

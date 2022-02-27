@@ -10,6 +10,7 @@ type Props = {
   content: string;
   handleSubmit: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   handleReset: () => void;
+  textareaStyle: string;
 };
 
 export const PostCreateCard: VFC<Props> = memo((props) => {
@@ -20,6 +21,7 @@ export const PostCreateCard: VFC<Props> = memo((props) => {
     content,
     handleSubmit,
     handleReset,
+    textareaStyle,
   } = props;
   return (
     <Box
@@ -36,7 +38,8 @@ export const PostCreateCard: VFC<Props> = memo((props) => {
           <Textarea
             resize="none"
             variant="unstyled"
-            className="textarea note happy"
+            // className="textarea note happy"
+            className={textareaStyle}
             width="60%"
             height="210px"
             onChange={handleContentChange}
