@@ -1,30 +1,31 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import Cookies from "js-cookie";
-import { User } from "../types/user";
-import client from "./client";
+import Cookies from 'js-cookie';
+import { User } from '../types/user';
+import client from './client';
 
 // サインアップ
 export const signUp = (
   params: Pick<
     User,
-    "name" | "emotion" | "email" | "password" | "passwordConfirmation"
+    'name' | 'emotion' | 'email' | 'password' | 'passwordConfirmation'
   >
 ) => {
-  return client.post("/auth", params);
+  return client.post('/auth', params);
 };
 
 // サインイン
-export const signIn = (params: Pick<User, "email" | "password">) => {
-  return client.post("/auth/sign_in", params);
+export const signIn = (params: Pick<User, 'email' | 'password'>) => {
+  return client.post('/auth/sign_in', params);
 };
 
 // サインアウト
 export const signOut = () => {
-  return client.delete("/auth/sign_out", {
+  return client.delete('/auth/sign_out', {
     headers: <any>{
-      "access-token": Cookies.get("_access_token"),
-      client: Cookies.get("_client"),
-      uid: Cookies.get("_uid"),
+      'access-token': Cookies.get('_access_token'),
+      client: Cookies.get('_client'),
+      uid: Cookies.get('_uid'),
     },
   });
 };
@@ -32,17 +33,17 @@ export const signOut = () => {
 // ログインユーザーの取得
 export const getCurrentUser = () => {
   if (
-    !Cookies.get("_access_token") ||
-    !Cookies.get("_client") ||
-    !Cookies.get("_uid")
+    !Cookies.get('_access_token') ||
+    !Cookies.get('_client') ||
+    !Cookies.get('_uid')
   )
     return;
 
-  return client.get("/auth/sessions", {
+  return client.get('/auth/sessions', {
     headers: <any>{
-      "access-token": Cookies.get("_access_token"),
-      client: Cookies.get("_client"),
-      uid: Cookies.get("_uid"),
+      'access-token': Cookies.get('_access_token'),
+      client: Cookies.get('_client'),
+      uid: Cookies.get('_uid'),
     },
   });
 };
