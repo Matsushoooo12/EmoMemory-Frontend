@@ -1,46 +1,139 @@
-# Getting Started with Create React App
+# emo メモリー
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<img width="795" alt="スクリーンショット 2022-02-27 21 40 37" src="https://user-images.githubusercontent.com/66903388/155882734-f398892a-1633-445c-a148-a01092d0bbd6.png">
 
-## Available Scripts
+## 製作期間
 
-In the project directory, you can run:
+v1→2021/08~09
 
-### `npm start`
+v2→2022/02/16~02/27
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 概要
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+感情ベースで思ったことを呟けるメモアプリ。
 
-### `npm test`
+`喜怒哀楽`の感情をイメージした色とキャラクターを使って感情ベースで投稿ができ、それを見返すことで自分が普段どんな感情を持って生活しているのかを分析できる。
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 作ったきっかけ
 
-### `npm run build`
+これまで Backend(Ruby on Rails)、Frontend(React＆JavaScript)を使った SPA アプリ開発を主に行ってきました。
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+そんな中で 2021 年（大学３年）の夏休みに作成したのが、この emo メモリーの前のバージョンになります。
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+そして、今回 TypeScript を練習したいという思いもあって、過去の emo メモリーを持ち出して、拙かったデザインをリニューアル、React を TypeScript で書いて一から作り直しました。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 使用技術
 
-### `npm run eject`
+## URL
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Frontend リポジトリ
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+https://github.com/Matsushoooo12/EmoMemory-Frontend-v1
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Backend リポジトリ
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+https://github.com/Matsushoooo12/EmoMemory-API-v1
 
-## Learn More
+## 利用方法
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- 新規投稿ページで感情にあったカードを選び投稿。
+- 投稿一覧で自分のもの以外の投稿も見られる。
+- プロフィールページでプロフィール編集や自分の投稿一覧を見ることができる。
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 目指した課題解決
+
+コロナ化で人と会う機会も少ない中で、思ったことや本音を吐き出したいけどそれを吐き出す相手がいなくて内に溜まっていることが多くなったと個人的に感じています。
+
+しかし、SNS で知り合いなどがいる中で発信するほどでもないなと思って吐き出せないストレスがある人も多いと思います。
+
+それを吐き出す時に自分だけが見られるメモに書くのも良いですが、より外に思っていることを吐き出してスッキリするためには世界に発信する感覚が必要だと思いました。
+
+そこで、喜怒哀楽それぞれごとに分けて投稿できる SNS のような作りにして、外に発信しつつ、自分のマイページで自分の投稿一覧を見ることができ、過去に投稿したものが喜怒哀楽のどれに当てはまることが多いのか、またどのようなことを書き留めているのかを振り返られるようにしました。
+
+## ページ説明
+
+### 新規登録ページ
+
+<img width="1292" alt="スクリーンショット 2022-02-27 16 35 35" src="https://user-images.githubusercontent.com/66903388/155889456-12e22265-a7dd-4cf4-9660-f1650ef4c727.png">
+
+- 名前、メールアドレス、パスワード、パスワード確認を入力して登録できる。
+
+### ログインページ
+
+<img width="1292" alt="スクリーンショット 2022-02-27 16 35 44" src="https://user-images.githubusercontent.com/66903388/155889482-c34b4058-8033-49d9-9404-297321a3faa7.png">
+
+- 新規登録したユーザーのメールアドレス、パスワードを入力してログインできる。
+
+### 新規投稿作成
+
+<img width="1292" alt="スクリーンショット 2022-02-27 16 32 33" src="https://user-images.githubusercontent.com/66903388/155884659-4693639e-fbdd-482f-a50b-7703f38e7b7f.png">
+
+- フォームの上の４つの顔ボタンを押したらそれぞれのフォームに切り替えられて、そのフォームで投稿したらそのメモが作成される。
+
+### 投稿一覧
+
+<img width="1292" alt="スクリーンショット 2022-02-27 16 32 27" src="https://user-images.githubusercontent.com/66903388/155884681-4e3f843f-871e-48cb-b812-1b8fc5f3bc17.png">
+
+- 作成した感情のメモがこの投稿一覧ページに挿入される。ユーザー名などはなく、それぞれのユーザー詳細もないため完全匿名で投稿ができる。
+- このページの投稿は全てのアカウントの投稿が表示される。
+- All ボタンをクリックすると全ての感情カード一覧が、それぞれの感情の顔をクリックするとそれぞれの感情のカード一覧が表示される。
+- それなボタンをクリックすることで`いいね`ができる。自分の投稿にいいねがあることで、匿名性を持ちながら承認欲求を満たすことができる。
+
+### ログインユーザー投稿詳細
+
+<img width="1292" alt="スクリーンショット 2022-02-27 16 32 49" src="https://user-images.githubusercontent.com/66903388/155884696-f39b19b1-e005-4bc5-84db-f8925b7fd359.png">
+
+- 枠の付いている投稿一覧のそれぞれの投稿をクリックするとログインユーザーの投稿詳細のモーダルが出る。
+- ログインユーザーの投稿であれば、投稿編集と投稿削除ができる。
+
+### その他のユーザー投稿詳細
+
+<img width="1292" alt="スクリーンショット 2022-02-27 16 32 54" src="https://user-images.githubusercontent.com/66903388/155885494-b5a84f00-ac03-495a-8551-55e379ad6657.png">
+
+- 枠の付いていない投稿一覧のそれぞれの投稿をクリックするとログインユーザー以外の投稿詳細のモーダルが出る。
+
+### プロフィール
+
+<img width="1292" alt="スクリーンショット 2022-02-27 16 33 00" src="https://user-images.githubusercontent.com/66903388/155885543-0c0bed9a-5de4-489e-a4b4-60b7c484afa5.png">
+
+- ログインユーザーの名前とメールアドレスが表示され、背景には現在の感情の色を指定している。
+
+### ログインユーザーのプロフィール編集
+
+<img width="1292" alt="スクリーンショット 2022-02-27 16 33 11" src="https://user-images.githubusercontent.com/66903388/155885569-2cdc7ce5-6f27-474a-acf5-2e5897c86789.png">
+
+- `Edit Profile`ボタンをクリックするとユーザー編集モーダルが出てくる。
+- ここで設定した感情に一致した色がプロフィール背景に設定される。
+- また、Header の名前の横の顔にも設定される。
+- デフォルトでは`喜`の黄色いキャラクターが設定されている。
+
+### ログインユーザーの投稿一覧
+
+<img width="1292" alt="スクリーンショット 2022-02-27 16 33 25" src="https://user-images.githubusercontent.com/66903388/155885645-8f1becb3-d41e-4468-9722-e361bbf772cc.png">
+
+- ログインユーザーの投稿一覧が表示されている。
+- All ボタンをクリックすると全ての感情カード一覧が、それぞれの感情の顔をクリックするとそれぞれの感情のカード一覧が表示される。
+
+## 実装予定の機能
+
+- プロフィールページのカレンダーにその日一日の投稿で一番多い投稿数がある感情の色の背景にする。
+- プロフィールページにレーダーチャートを付けて、これまでの投稿の感情の割合を可視化する。
+
+## データベース設計
+
+<img width="501" alt="スクリーンショット 2022-02-28 0 31 28" src="https://user-images.githubusercontent.com/66903388/155888862-ea2a0506-080a-470a-8442-ddbccc6b7729.png">
+
+## ローカルでの動作方法
+
+### Backend
+
+```
+$ rails db:migrate
+```
+
+### Frontend
+
+```
+$ rm -rf node_modules
+$ npm install
+```
