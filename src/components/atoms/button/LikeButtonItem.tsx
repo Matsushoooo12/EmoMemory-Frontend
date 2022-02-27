@@ -1,5 +1,6 @@
 import { Flex, HStack, Image, Text } from '@chakra-ui/react';
 import { memo, useContext, VFC } from 'react';
+
 import { AuthContext } from '../../../App';
 import { Post } from '../../../types/post';
 

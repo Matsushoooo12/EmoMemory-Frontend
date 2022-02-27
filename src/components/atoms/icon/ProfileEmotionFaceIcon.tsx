@@ -1,5 +1,6 @@
 import { Image } from '@chakra-ui/react';
 import { memo, useContext, VFC } from 'react';
+
 import { AuthContext } from '../../../App';
 
 type Props = {

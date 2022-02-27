@@ -10,6 +10,7 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
+import Cookies from 'js-cookie';
 
 import HappyFace from '../../../images/HappyFace.png';
 import AngerFace from '../../../images/AngerFace.png';
@@ -18,7 +19,6 @@ import FunFace from '../../../images/FunFace.png';
 import { useHistory } from 'react-router-dom';
 import { signUp } from '../../../api/auth';
 import { AuthContext } from '../../../App';
-import Cookies from 'js-cookie';
 import { SubmitButton } from '../../atoms/button/SubmitButton';
 import { ResetButton } from '../../atoms/button/ResetButton';
 import { PrimaryInput } from '../../atoms/form/PrimaryInput';

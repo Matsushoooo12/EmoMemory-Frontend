@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import Cookies from 'js-cookie';
+
 import { User } from '../types/user';
 import client from './client';
 
