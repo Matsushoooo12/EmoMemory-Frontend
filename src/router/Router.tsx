@@ -1,16 +1,17 @@
-import { memo, useContext, VFC } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { AuthContext } from "../App";
-import { SignIn } from "../components/pages/auth/SignIn";
-import { SignUp } from "../components/pages/auth/SignUp";
-// import { Page404 } from "../components/pages/Page404";
-import { Home } from "../components/pages/post/Home";
-import { Index } from "../components/pages/post/Index";
-import { MyUser } from "../components/pages/user/MyUser";
-import { HeaderLayout } from "../components/templates/HeaderLayout";
+import { memo, useContext, VFC } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { AuthContext } from '../App';
+import { SignIn } from '../components/pages/auth/SignIn';
+import { SignUp } from '../components/pages/auth/SignUp';
+import { Home } from '../components/pages/post/Home';
+import { Index } from '../components/pages/post/Index';
+import { MyUser } from '../components/pages/user/MyUser';
+import { HeaderLayout } from '../components/templates/HeaderLayout';
 
 export const Router: VFC = memo(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { loading, isSignedIn } = useContext<any>(AuthContext);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const Private = ({ children }: any) => {
     if (!loading) {
       if (isSignedIn) {
@@ -45,9 +46,6 @@ export const Router: VFC = memo(() => {
             <MyUser showLabel="MyPost" />
           </Route>
         </Private>
-        {/* <Route path="*">
-          <Page404 />
-        </Route> */}
       </HeaderLayout>
     </Switch>
   );

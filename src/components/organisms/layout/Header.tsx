@@ -1,15 +1,25 @@
 import { memo, useCallback, useContext, VFC } from "react";
-import { Flex, Link, Box, HStack, Image, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Link,
+  Box,
+  HStack,
+  Image,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 
-import headerLogo from "../../images/logo.png";
-import { AuthContext } from "../../App";
-import HappyFace from "../../images/喜01.png";
-import AngerFace from "../../images/怒01.png";
-import SorrowFace from "../../images/哀01.png";
-import FunFace from "../../images/楽01.png";
-import { signOut } from "../../api/auth";
+import { AuthContext } from "../../../App";
+import headerLogo from "../../../images/logo.png";
+import HappyFace from "../../../images/喜01.png";
+import AngerFace from "../../../images/怒01.png";
+import SorrowFace from "../../../images/哀01.png";
+import FunFace from "../../../images/楽01.png";
+import { signOut } from "../../../api/auth";
+import { MenuIconButton } from "../../atoms/button/MenuIconButton";
+import { MenuDrawer } from "../../molecules/MenuDrawer";
 
 export const Header: VFC = memo(() => {
   const { currentUser, setIsSignedIn, loading, isSignedIn } =
@@ -21,8 +31,7 @@ export const Header: VFC = memo(() => {
     try {
       const res = await signOut();
 
-      // eslint-disable-next-line no-cond-assign
-      if ((res.data.success = true)) {
+      if (res.data.success) {
         Cookies.remove("_access_token");
         Cookies.remove("_client");
         Cookies.remove("_uid");
@@ -54,9 +63,9 @@ export const Header: VFC = memo(() => {
     history.push("/index");
   }, [history]);
 
-  const onClickProfile = () => {
-    history.push(`/profile/${currentUser.id}`);
-  };
+  const onClickProfile = useCallback(() => {
+    history.push(`/profile/${currentUser?.id}`);
+  }, [history]);
 
   // ログインユーザーのヘッダーFace
   const headerProfileFace = () => {
@@ -124,6 +133,8 @@ export const Header: VFC = memo(() => {
       return <></>;
     }
   };
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Flex
@@ -134,8 +145,7 @@ export const Header: VFC = memo(() => {
         justify="space-between"
         height="80px"
         width="100%"
-        minWidth="800px"
-        px="80px"
+        px={{ base: "40px", md: "80px" }}
         position="fixed"
         zIndex="100"
       >
@@ -147,12 +157,27 @@ export const Header: VFC = memo(() => {
         >
           <Image width="140px" src={headerLogo} alt="HeaderLogo" />
         </Flex>
-        <Flex align="center" fontSize="16px">
+        <Flex
+          align="center"
+          fontSize="16px"
+          display={{ base: "none", md: "flex" }}
+        >
           <HStack spacing="40px">
             <HeaderMenus />
           </HStack>
         </Flex>
+        <MenuIconButton onOpen={onOpen} />
       </Flex>
+      <MenuDrawer
+        onClose={onClose}
+        isOpen={isOpen}
+        headerLogo={headerLogo}
+        onClickHome={onClickHome}
+        onClickIndex={onClickIndex}
+        onClickProfile={onClickProfile}
+        handleSignOut={handleSignOut}
+        headerProfileFace={headerProfileFace}
+      />
     </>
   );
 });

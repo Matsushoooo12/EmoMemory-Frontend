@@ -1,42 +1,44 @@
 import {
   Box,
-  Button,
   Flex,
   Heading,
   HStack,
   Image,
-  Input,
   InputGroup,
   Stack,
   Link,
-} from "@chakra-ui/react";
-import React, { memo, useCallback, useContext, useState, VFC } from "react";
-import Cookies from "js-cookie";
+} from '@chakra-ui/react';
+import React, { memo, useCallback, useContext, useState, VFC } from 'react';
+import Cookies from 'js-cookie';
 
-import HappyFace from "../../../images/喜01.png";
-import AngerFace from "../../../images/怒01.png";
-import SorrowFace from "../../../images/哀01.png";
-import FunFace from "../../../images/楽01.png";
-import { useHistory } from "react-router-dom";
-import { signIn } from "../../../api/auth";
-import { AuthContext } from "../../../App";
-import "../../../App.css";
+import HappyFace from '../../../images/喜01.png';
+import AngerFace from '../../../images/怒01.png';
+import SorrowFace from '../../../images/哀01.png';
+import FunFace from '../../../images/楽01.png';
+import { useHistory } from 'react-router-dom';
+import { signIn } from '../../../api/auth';
+import { AuthContext } from '../../../App';
+import '../../../App.css';
+import { SubmitButton } from '../../atoms/button/SubmitButton';
+import { ResetButton } from '../../atoms/button/ResetButton';
+import { PrimaryInput } from '../../atoms/form/PrimaryInput';
 
 export const SignIn: VFC = memo(() => {
   const history = useHistory();
   const onClickSignUp = useCallback(() => {
-    history.push("/signup");
+    history.push('/signup');
   }, [history]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { setIsSignedIn, setCurrentUser } = useContext<any>(AuthContext);
   const [value, setValue] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const handleReset = () => {
     setValue({
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     });
   };
 
@@ -52,14 +54,14 @@ export const SignIn: VFC = memo(() => {
     try {
       const res = await signIn(value);
       if (res.status === 200) {
-        Cookies.set("_access_token", res.headers["access-token"]);
-        Cookies.set("_client", res.headers["client"]);
-        Cookies.set("_uid", res.headers["uid"]);
+        Cookies.set('_access_token', res.headers['access-token']);
+        Cookies.set('_client', res.headers['client']);
+        Cookies.set('_uid', res.headers['uid']);
 
         setIsSignedIn(true);
         setCurrentUser(res.data.data);
 
-        history.push("/");
+        history.push('/');
       }
     } catch (e) {
       console.log(e);
@@ -107,41 +109,28 @@ export const SignIn: VFC = memo(() => {
             <form>
               <InputGroup display="block" position="relative">
                 <Stack spacing="40px">
-                  <Input
+                  <PrimaryInput
                     placeholder="メールアドレス"
                     value={value.email}
                     onChange={(e) => handleChange(e)}
                     type="email"
                     name="email"
-                    variant="flushed"
-                    focusBorderColor="#47789F"
                   />
-                  <Input
+                  <PrimaryInput
                     placeholder="パスワード"
                     value={value.password}
                     onChange={(e) => handleChange(e)}
                     type="password"
                     name="password"
-                    variant="flushed"
-                    focusBorderColor="#47789F"
                   />
                   <Flex justify="center">
                     <HStack spacing="32px">
-                      <Button
-                        bg="#47789F"
-                        color="white"
-                        _hover={{ opacity: 0.8 }}
-                        onClick={(e) => handleSubmit(e)}
-                      >
+                      <SubmitButton handleSubmit={handleSubmit} width="80px">
                         ログイン
-                      </Button>
-                      <Button
-                        border="3px solid #47789F"
-                        color="#47789F"
-                        onClick={handleReset}
-                      >
+                      </SubmitButton>
+                      <ResetButton handleReset={handleReset} width="80px">
                         リセット
-                      </Button>
+                      </ResetButton>
                     </HStack>
                   </Flex>
                 </Stack>
