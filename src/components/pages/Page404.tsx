@@ -1,10 +1,10 @@
-import { memo, useEffect, useState, VFC } from "react";
-import { Text, Box, Heading } from "@chakra-ui/react";
+import { memo, useEffect, useState, VFC } from 'react';
+import { Text, Box, Heading } from '@chakra-ui/react';
 
-import HappyCard from "../../images/喜付箋.png";
-import AngerCard from "../../images/怒付箋.png";
-import SorrowCard from "../../images/哀付箋.png";
-import FunCard from "../../images/楽付箋.png";
+import HappyCard from '../../images/HappyCard.png';
+import AngerCard from '../../images/AngerCard.png';
+import SorrowCard from '../../images/SorrowCard.png';
+import FunCard from '../../images/FunCard.png';
 
 export const Page404: VFC = memo(() => {
   const [randomNumber, setRandomNumber] = useState(0);

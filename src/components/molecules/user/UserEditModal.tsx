@@ -17,10 +17,10 @@ import { memo, VFC } from 'react';
 
 import { ResetButton } from '../../atoms/button/ResetButton';
 import { SubmitButton } from '../../atoms/button/SubmitButton';
-import HappyFace from '../../../images/喜01.png';
-import AngerFace from '../../../images/怒01.png';
-import SorrowFace from '../../../images/哀01.png';
-import FunFace from '../../../images/楽01.png';
+import HappyFace from '../../../images/HappyFace.png';
+import AngerFace from '../../../images/AngerFace.png';
+import SorrowFace from '../../../images/SorrowFace.png';
+import FunFace from '../../../images/FunFace.png';
 
 type Props = {
   isOpen: boolean;
