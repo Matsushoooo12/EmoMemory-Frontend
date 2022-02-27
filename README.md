@@ -33,7 +33,30 @@ v2→2022/02/16~02/27（今回）
 
 - コンポーネントや関数の命名にもっと明確なルールを決めてから始めるべきでしたが、その場の思いつきで命名してしまう面もあったためひと目でわかりにくい名前をつけてしまうことがありました。
 
-## 使用技術
+## 主な使用技術
+
+### Backend
+
+- ruby
+- rails
+- devise
+- devise-token-auth
+- rack-cors
+
+### Frontend
+
+- react
+- typescript
+- dayjs
+- @chakra-ui/react
+- @chakra-ui/icons
+- react-router-dom
+- js-cookie
+- axios
+- axios-case-converter
+- @fullcalendar/react
+- eslint
+- prettier
 
 ## URL
 
@@ -108,6 +131,7 @@ https://github.com/Matsushoooo12/EmoMemory-API-v1
 <img width="1292" alt="スクリーンショット 2022-02-27 16 33 00" src="https://user-images.githubusercontent.com/66903388/155885543-0c0bed9a-5de4-489e-a4b4-60b7c484afa5.png">
 
 - ログインユーザーの名前とメールアドレスが表示され、背景には現在の感情の色を指定している。
+- 月表示カレンダーをつけて、1 日で多い投稿の感情の色をその日の背景に設定する（未実装）
 
 ### ログインユーザーのプロフィール編集
 
