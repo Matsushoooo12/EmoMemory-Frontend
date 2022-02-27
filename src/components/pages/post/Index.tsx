@@ -3,7 +3,7 @@ import React, { memo, useEffect, useState, VFC } from 'react';
 import { Wrap } from '@chakra-ui/react';
 import '../../../App.css';
 
-import LikeButton from '../../../images/それなスタンプ.png';
+import LikeButton from '../../../images/LikeButton.png';
 import { Post } from '../../../types/post';
 import {
   deletePost,
