@@ -1,7 +1,7 @@
 import { Box, useDisclosure } from '@chakra-ui/react';
 import React, { memo, useContext, useState, VFC } from 'react';
 
-import LikeButton from '../../../images/それなスタンプ.png';
+import LikeButton from '../../../images/LikeButton.png';
 import '../../../App.css';
 import { AuthContext } from '../../../App';
 import { Like } from '../../../types/like';

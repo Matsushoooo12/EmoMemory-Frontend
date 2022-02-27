@@ -3,10 +3,10 @@ import { memo, VFC } from 'react';
 import dayjs from 'dayjs';
 
 import { Post } from '../../../types/post';
-import HappyLongCard from '../../../images/喜付箋横長.png';
-import AngerLongCard from '../../../images/怒付箋横長.png';
-import SorrowLongCard from '../../../images/哀付箋横長.png';
-import FunLongCard from '../../../images/楽付箋横長.png';
+import HappyLongCard from '../../../images/HappyLongCard.png';
+import AngerLongCard from '../../../images/AngerLongCard.png';
+import SorrowLongCard from '../../../images/SorrowLongCard.png';
+import FunLongCard from '../../../images/FunLongCard.png';
 
 type Props = {
   post: Omit<Post, 'updatedAt' | 'user'>;

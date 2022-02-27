@@ -9,10 +9,10 @@ import {
 } from '@chakra-ui/react';
 import { memo, useContext, VFC } from 'react';
 
-import HappyCard from '../../../images/喜付箋.png';
-import AngerCard from '../../../images/怒付箋.png';
-import SorrowCard from '../../../images/哀付箋.png';
-import FunCard from '../../../images/楽付箋.png';
+import HappyCard from '../../../images/HappyCard.png';
+import AngerCard from '../../../images/AngerCard.png';
+import SorrowCard from '../../../images/SorrowCard.png';
+import FunCard from '../../../images/FunCard.png';
 import { Post } from '../../../types/post';
 import { AuthContext } from '../../../App';
 import { UserPostFormCard } from '../../molecules/user/UserPostFormCard';

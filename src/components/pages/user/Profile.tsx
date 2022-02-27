@@ -11,10 +11,10 @@ import React, { memo, useContext, useState, VFC } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
-import HappyFace from '../../../images/喜01.png';
-import AngerFace from '../../../images/怒01.png';
-import SorrowFace from '../../../images/哀01.png';
-import FunFace from '../../../images/楽01.png';
+import HappyFace from '../../../images/HappyFace.png';
+import AngerFace from '../../../images/AngerFace.png';
+import SorrowFace from '../../../images/SorrowFace.png';
+import FunFace from '../../../images/FunFace.png';
 import { AuthContext } from '../../../App';
 import { updateUser } from '../../../api/user';
 import { UserEditModal } from '../../molecules/user/UserEditModal';

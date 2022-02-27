@@ -11,10 +11,10 @@ import { memo, useContext, VFC } from 'react';
 
 import { AuthContext } from '../../../App';
 import { Post } from '../../../types/post';
-import HappyCard from '../../../images/喜付箋.png';
-import AngerCard from '../../../images/怒付箋.png';
-import SorrowCard from '../../../images/哀付箋.png';
-import FunCard from '../../../images/楽付箋.png';
+import HappyCard from '../../../images/HappyCard.png';
+import AngerCard from '../../../images/AngerCard.png';
+import SorrowCard from '../../../images/SorrowCard.png';
+import FunCard from '../../../images/FunCard.png';
 import { PostDetailFormCard } from '../../molecules/post/PostDetailFormCard';
 import { PostDetailAnotherCard } from '../../molecules/post/PostDetailAnotherCard';
 
