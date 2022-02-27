@@ -4,30 +4,23 @@ import {
   HStack,
   Image,
   Text,
-  Modal,
-  ModalOverlay,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
   useDisclosure,
   Box,
-  Heading,
-  InputGroup,
-  Stack,
-  Input,
-} from "@chakra-ui/react";
-import React, { memo, useContext, useState, VFC } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
+} from '@chakra-ui/react';
+import React, { memo, useContext, useState, VFC } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
 
-import HappyFace from "../../../images/喜01.png";
-import AngerFace from "../../../images/怒01.png";
-import SorrowFace from "../../../images/哀01.png";
-import FunFace from "../../../images/楽01.png";
-import { AuthContext } from "../../../App";
-import { updateUser } from "../../../api/user";
+import HappyFace from '../../../images/喜01.png';
+import AngerFace from '../../../images/怒01.png';
+import SorrowFace from '../../../images/哀01.png';
+import FunFace from '../../../images/楽01.png';
+import { AuthContext } from '../../../App';
+import { updateUser } from '../../../api/user';
+import { UserEditModal } from '../../molecules/user/UserEditModal';
 
 export const Profile: VFC = memo(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { currentUser } = useContext<any>(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [emotionFace, setEmotionFace] = useState(currentUser.emotion);
@@ -63,20 +56,20 @@ export const Profile: VFC = memo(() => {
   };
 
   const onClickHappyFace = () => {
-    setEmotionFace("happy");
+    setEmotionFace('happy');
   };
   const onClickAngerFace = () => {
-    setEmotionFace("anger");
+    setEmotionFace('anger');
   };
   const onClickSorrowFace = () => {
-    setEmotionFace("sorrow");
+    setEmotionFace('sorrow');
   };
   const onClickFunFace = () => {
-    setEmotionFace("fun");
+    setEmotionFace('fun');
   };
 
   const handleReset = () => {
-    setName("");
+    setName('');
   };
 
   return (
@@ -92,36 +85,36 @@ export const Profile: VFC = memo(() => {
               width="60px"
               height="60px"
               border={
-                currentUser.emotion === "happy" ? "5px solid yellow" : "none"
+                currentUser.emotion === 'happy' ? '5px solid yellow' : 'none'
               }
-              shadow={currentUser.emotion === "happy" ? "md" : "none"}
+              shadow={currentUser.emotion === 'happy' ? 'md' : 'none'}
             />
             <Image
               src={AngerFace}
               width="60px"
               height="60px"
               border={
-                currentUser.emotion === "anger" ? "5px solid red" : "none"
+                currentUser.emotion === 'anger' ? '5px solid red' : 'none'
               }
-              shadow={currentUser.emotion === "anger" ? "md" : "none"}
+              shadow={currentUser.emotion === 'anger' ? 'md' : 'none'}
             />
             <Image
               src={SorrowFace}
               width="60px"
               height="60px"
               border={
-                currentUser.emotion === "sorrow" ? "5px solid blue" : "none"
+                currentUser.emotion === 'sorrow' ? '5px solid blue' : 'none'
               }
-              shadow={currentUser.emotion === "sorrow" ? "md" : "none"}
+              shadow={currentUser.emotion === 'sorrow' ? 'md' : 'none'}
             />
             <Image
               src={FunFace}
               width="60px"
               height="60px"
               border={
-                currentUser.emotion === "fun" ? "5px solid green" : "none"
+                currentUser.emotion === 'fun' ? '5px solid green' : 'none'
               }
-              shadow={currentUser.emotion === "fun" ? "md" : "none"}
+              shadow={currentUser.emotion === 'fun' ? 'md' : 'none'}
             />
           </HStack>
         </Flex>
@@ -150,120 +143,20 @@ export const Profile: VFC = memo(() => {
         <FullCalendar plugins={[dayGridPlugin]} initialView="dayGridMonth" />
       </Box>
       {/* プロフィール編集モーダル */}
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent shadow="md" width="480px" height="430px">
-          <ModalBody textAlign="center">
-            <ModalCloseButton
-              mt="16px"
-              mr="16px"
-              fontSize="16px"
-              fontWeight="bold"
-            />
-            <Box width="320px" mx="auto">
-              <Heading as="h1" fontSize="32px" mt="40px" mb="32px">
-                プロフィール編集
-              </Heading>
-              <form>
-                <InputGroup display="block" position="relative">
-                  <Stack spacing="24px">
-                    <Input
-                      type="hidden"
-                      name="emotion"
-                      onChange={handleEmotionChange}
-                      value={emotionFace}
-                    />
-                    <Input
-                      placeholder="名前"
-                      value={name}
-                      onChange={handleNameChange}
-                      type="text"
-                      name="name"
-                      variant="flushed"
-                      focusBorderColor="#47789F"
-                      mb="24px"
-                    />
-                    <Box>
-                      <Heading as="h2" fontSize="24px" mb="16px">
-                        あなたの今の感情は？
-                      </Heading>
-                      <Flex justify="center">
-                        <HStack spacing="8px">
-                          <Image
-                            src={HappyFace}
-                            width="60px"
-                            height="60px"
-                            border={
-                              emotionFace === "happy"
-                                ? "5px solid yellow"
-                                : "none"
-                            }
-                            shadow={emotionFace === "happy" ? "md" : "none"}
-                            onClick={onClickHappyFace}
-                          />
-                          <Image
-                            src={AngerFace}
-                            width="60px"
-                            height="60px"
-                            border={
-                              emotionFace === "anger" ? "5px solid red" : "none"
-                            }
-                            shadow={emotionFace === "anger" ? "md" : "none"}
-                            onClick={onClickAngerFace}
-                          />
-                          <Image
-                            src={SorrowFace}
-                            width="60px"
-                            height="60px"
-                            border={
-                              emotionFace === "sorrow"
-                                ? "5px solid blue"
-                                : "none"
-                            }
-                            shadow={emotionFace === "sorrow" ? "md" : "none"}
-                            onClick={onClickSorrowFace}
-                          />
-                          <Image
-                            src={FunFace}
-                            width="60px"
-                            height="60px"
-                            border={
-                              emotionFace === "fun" ? "5px solid green" : "none"
-                            }
-                            shadow={emotionFace === "fun" ? "md" : "none"}
-                            onClick={onClickFunFace}
-                          />
-                        </HStack>
-                      </Flex>
-                    </Box>
-                    <Flex justify="center">
-                      <HStack spacing="16px">
-                        <Button
-                          _hover={{ opacity: 0.8 }}
-                          bg="#47789F"
-                          color="white"
-                          width="80px"
-                          onClick={(e) => handleUpdateUser(e)}
-                        >
-                          更新
-                        </Button>
-                        <Button
-                          border="3px solid #47789F"
-                          color="#47789F"
-                          width="80px"
-                          onClick={handleReset}
-                        >
-                          リセット
-                        </Button>
-                      </HStack>
-                    </Flex>
-                  </Stack>
-                </InputGroup>
-              </form>
-            </Box>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <UserEditModal
+        isOpen={isOpen}
+        onClose={onClose}
+        handleEmotionChange={handleEmotionChange}
+        emotionFace={emotionFace}
+        name={name}
+        handleNameChange={handleNameChange}
+        onClickHappyFace={onClickHappyFace}
+        onClickAngerFace={onClickAngerFace}
+        onClickSorrowFace={onClickSorrowFace}
+        onClickFunFace={onClickFunFace}
+        handleUpdateUser={handleUpdateUser}
+        handleReset={handleReset}
+      />
     </>
   );
 });
