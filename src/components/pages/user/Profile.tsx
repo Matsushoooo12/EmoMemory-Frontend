@@ -74,8 +74,12 @@ export const Profile: VFC = memo(() => {
 
   return (
     <>
-      <Flex justify="space-between" align="center">
-        <Text fontSize="32px" fontWeight="bold">
+      <Flex
+        justify="space-between"
+        align="center"
+        display={{ base: 'block', md: 'flex' }}
+      >
+        <Text fontSize={{ base: '24px', md: '32px' }} fontWeight="bold">
           Name : {currentUser.name}
         </Text>
         <Flex>
@@ -119,10 +123,15 @@ export const Profile: VFC = memo(() => {
           </HStack>
         </Flex>
       </Flex>
-      <Text fontSize="32px" fontWeight="bold">
+      <Text fontSize={{ base: '24px', md: '32px' }} fontWeight="bold">
         Email : {currentUser.email}
       </Text>
-      <Flex mt="16px" mb="40px" justify="space-between" align="center">
+      <Flex
+        mt="16px"
+        mb="40px"
+        justify={{ base: 'flex-start', md: 'space-between' }}
+        align="center"
+      >
         <Flex fontSize="16px" fontWeight="bold">
           <HStack spacing="16px">
             <Text>post : {currentUser.posts.length}</Text>
@@ -135,6 +144,7 @@ export const Profile: VFC = memo(() => {
           bg="white"
           width="160px"
           shadow="md"
+          ml={{ base: '16px' }}
         >
           Edit Profile
         </Button>
