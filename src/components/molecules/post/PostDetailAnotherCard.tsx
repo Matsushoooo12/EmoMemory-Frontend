@@ -1,6 +1,7 @@
 import { Box, Flex, Text, Textarea } from '@chakra-ui/react';
 import { memo, VFC } from 'react';
 import dayjs from 'dayjs';
+
 import { Post } from '../../../types/post';
 import { LikeButtonItem } from '../../atoms/button/LikeButtonItem';
 

@@ -1,5 +1,6 @@
 import { Box, Flex, HStack } from '@chakra-ui/react';
 import { memo, useContext, useState, VFC } from 'react';
+
 import { AuthContext } from '../../../App';
 import { ProfileTabButton } from '../../atoms/button/ProfileTabButton';
 import { MyPost } from './MyPost';

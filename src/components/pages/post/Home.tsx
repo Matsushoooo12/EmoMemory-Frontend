@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React, { memo, useState, VFC } from 'react';
-import '../../../App.css';
 
+import '../../../App.css';
 import HappyFace from '../../../images/HappyFace.png';
 import HappyCard from '../../../images/HappyCard.png';
 import AngerFace from '../../../images/AngerFace.png';
