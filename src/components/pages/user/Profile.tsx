@@ -2,7 +2,6 @@ import {
   Button,
   Flex,
   HStack,
-  Image,
   Text,
   useDisclosure,
   Box,
@@ -18,6 +17,7 @@ import FunFace from '../../../images/FunFace.png';
 import { AuthContext } from '../../../App';
 import { updateUser } from '../../../api/user';
 import { UserEditModal } from '../../molecules/user/UserEditModal';
+import { ProfileEmotionFaceIcon } from '../../atoms/icon/ProfileEmotionFaceIcon';
 
 export const Profile: VFC = memo(() => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,42 +84,10 @@ export const Profile: VFC = memo(() => {
         </Text>
         <Flex>
           <HStack spacing="8px">
-            <Image
-              src={HappyFace}
-              width="60px"
-              height="60px"
-              border={
-                currentUser.emotion === 'happy' ? '5px solid yellow' : 'none'
-              }
-              shadow={currentUser.emotion === 'happy' ? 'md' : 'none'}
-            />
-            <Image
-              src={AngerFace}
-              width="60px"
-              height="60px"
-              border={
-                currentUser.emotion === 'anger' ? '5px solid red' : 'none'
-              }
-              shadow={currentUser.emotion === 'anger' ? 'md' : 'none'}
-            />
-            <Image
-              src={SorrowFace}
-              width="60px"
-              height="60px"
-              border={
-                currentUser.emotion === 'sorrow' ? '5px solid blue' : 'none'
-              }
-              shadow={currentUser.emotion === 'sorrow' ? 'md' : 'none'}
-            />
-            <Image
-              src={FunFace}
-              width="60px"
-              height="60px"
-              border={
-                currentUser.emotion === 'fun' ? '5px solid green' : 'none'
-              }
-              shadow={currentUser.emotion === 'fun' ? 'md' : 'none'}
-            />
+            <ProfileEmotionFaceIcon EmotionFace={HappyFace} emotion="happy" />
+            <ProfileEmotionFaceIcon EmotionFace={AngerFace} emotion="anger" />
+            <ProfileEmotionFaceIcon EmotionFace={SorrowFace} emotion="sorrow" />
+            <ProfileEmotionFaceIcon EmotionFace={FunFace} emotion="fun" />
           </HStack>
         </Flex>
       </Flex>
