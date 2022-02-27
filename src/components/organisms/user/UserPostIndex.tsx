@@ -55,6 +55,18 @@ export const UserPostIndex: VFC<Props> = memo((props) => {
     }
   };
 
+  const spEmotionWidth = (emotion: string) => {
+    if (emotion === 'happy') {
+      return '380px';
+    } else if (emotion === 'anger') {
+      return '380px';
+    } else if (emotion === 'sorrow') {
+      return '380px';
+    } else if (emotion === 'fun') {
+      return '380px';
+    }
+  };
+
   const emotionHeight = (emotion: string) => {
     if (emotion === 'happy') {
       return '278px';
@@ -64,6 +76,18 @@ export const UserPostIndex: VFC<Props> = memo((props) => {
       return '252px';
     } else if (emotion === 'fun') {
       return '272px';
+    }
+  };
+
+  const spEmotionHeight = (emotion: string) => {
+    if (emotion === 'happy') {
+      return '195px';
+    } else if (emotion === 'anger') {
+      return '195px';
+    } else if (emotion === 'sorrow') {
+      return '175px';
+    } else if (emotion === 'fun') {
+      return '186px';
     }
   };
 
@@ -79,6 +103,18 @@ export const UserPostIndex: VFC<Props> = memo((props) => {
     }
   };
 
+  const spLikeButtonTop = (emotion: string) => {
+    if (emotion === 'happy') {
+      return '16px';
+    } else if (emotion === 'anger') {
+      return '16px';
+    } else if (emotion === 'sorrow') {
+      return '3px';
+    } else if (emotion === 'fun') {
+      return '13px';
+    }
+  };
+
   const textareaTop = (emotion: string) => {
     if (emotion === 'happy') {
       return '120px';
@@ -88,6 +124,18 @@ export const UserPostIndex: VFC<Props> = memo((props) => {
       return '96px';
     } else if (emotion === 'fun') {
       return '116px';
+    }
+  };
+
+  const spTextareaTop = (emotion: string) => {
+    if (emotion === 'happy') {
+      return '80px';
+    } else if (emotion === 'anger') {
+      return '80px';
+    } else if (emotion === 'sorrow') {
+      return '60px';
+    } else if (emotion === 'fun') {
+      return '75px';
     }
   };
 
@@ -101,8 +149,14 @@ export const UserPostIndex: VFC<Props> = memo((props) => {
       bgPosition="center"
       bgSize="cover"
       bgRepeat="no-repeat"
-      width={emotionWidth(post.emotion)}
-      height={emotionHeight(post.emotion)}
+      width={{
+        base: spEmotionWidth(post.emotion),
+        md: emotionWidth(post.emotion),
+      }}
+      height={{
+        base: spEmotionHeight(post.emotion),
+        md: emotionHeight(post.emotion),
+      }}
       mx="auto"
       mb="24px"
       position="relative"
@@ -111,7 +165,10 @@ export const UserPostIndex: VFC<Props> = memo((props) => {
       <Flex
         position="absolute"
         right="40px"
-        top={likeButtonTop(post.emotion)}
+        top={{
+          base: spLikeButtonTop(post.emotion),
+          md: likeButtonTop(post.emotion),
+        }}
         align="center"
       >
         <Image src={LikeButton} width="40px" height="40px" mr="8px" />
@@ -125,17 +182,26 @@ export const UserPostIndex: VFC<Props> = memo((props) => {
         variant="unstyled"
         className={textareaColor(post.emotion)}
         width="80%"
-        height="128px"
+        height={{ base: '80px', md: '128px' }}
         position="absolute"
-        top={textareaTop(post.emotion)}
+        top={{
+          base: spTextareaTop(post.emotion),
+          md: textareaTop(post.emotion),
+        }}
         left="0"
         right="0"
         margin="auto"
         readOnly
         cursor="pointer"
         defaultValue={post.content}
+        fontSize={{ base: '12px', md: '16px' }}
       />
-      <Text position="absolute" bottom="10px" right="56px" fontSize="12px">
+      <Text
+        position="absolute"
+        bottom="10px"
+        right={{ base: '42px', md: '56px' }}
+        fontSize="12px"
+      >
         {dayjs(post.createdAt).format('YYYY/MM/DD')}
       </Text>
     </Box>

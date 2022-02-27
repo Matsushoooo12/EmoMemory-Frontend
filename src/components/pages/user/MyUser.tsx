@@ -60,11 +60,14 @@ export const MyUser: VFC<Props> = memo((props) => {
           </HStack>
         </Flex>
       </Box>
-      <Box mx="auto" width="560px" height="100%" mt="120px">
-        <>
-          {showLabel === 'MyProfile' && <Profile />}
-          {showLabel === 'MyPost' && <MyPost />}
-        </>
+      <Box
+        mx="auto"
+        width={{ base: '400px', md: '560px' }}
+        height="100%"
+        mt="120px"
+      >
+        {showLabel === 'MyProfile' && <Profile />}
+        {showLabel === 'MyPost' && <MyPost />}
       </Box>
     </Box>
   );
