@@ -16,7 +16,6 @@ export const Page404: VFC = memo(() => {
 
   useEffect(() => {
     randomCard();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Box py="80px" width="100%" height="100vh" position="relative">

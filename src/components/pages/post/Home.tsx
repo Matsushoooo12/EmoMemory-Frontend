@@ -1,48 +1,42 @@
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Image,
-  Input,
-  Textarea,
-} from "@chakra-ui/react";
-import React, { memo, useState, VFC } from "react";
-import "../../../App.css";
+import { Box, Flex } from '@chakra-ui/react';
+import React, { memo, useState, VFC } from 'react';
+import '../../../App.css';
 
-import HappyFace from "../../../images/喜01.png";
-import HappyCard from "../../../images/喜付箋.png";
-import AngerFace from "../../../images/怒01.png";
-import AngerCard from "../../../images/怒付箋.png";
-import SorrowFace from "../../../images/哀01.png";
-import SorrowCard from "../../../images/哀付箋.png";
-import FunFace from "../../../images/楽01.png";
-import FunCard from "../../../images/楽付箋.png";
-import { useHistory } from "react-router-dom";
-import { createPost } from "../../../api/post";
+import HappyFace from '../../../images/喜01.png';
+import HappyCard from '../../../images/喜付箋.png';
+import AngerFace from '../../../images/怒01.png';
+import AngerCard from '../../../images/怒付箋.png';
+import SorrowFace from '../../../images/哀01.png';
+import SorrowCard from '../../../images/哀付箋.png';
+import FunFace from '../../../images/楽01.png';
+import FunCard from '../../../images/楽付箋.png';
+import { useHistory } from 'react-router-dom';
+import { createPost } from '../../../api/post';
+import { EmotionFaceIcon } from '../../atoms/button/EmotionFaceIcon';
+import { PostCreateCard } from '../../molecules/post/PostCreateCard';
 
 export const Home: VFC = memo(() => {
   const history = useHistory();
-  const [content, setContent] = useState("");
-  const [emotion, setEmotion] = useState("happy");
+  const [content, setContent] = useState('');
+  const [emotion, setEmotion] = useState('happy');
   const handleHappy = () => {
-    setEmotion("happy");
+    setEmotion('happy');
   };
 
   const handleAnger = () => {
-    setEmotion("anger");
+    setEmotion('anger');
   };
 
   const handleSorrow = () => {
-    setEmotion("sorrow");
+    setEmotion('sorrow');
   };
 
   const handleFun = () => {
-    setEmotion("fun");
+    setEmotion('fun');
   };
 
   const handleReset = () => {
-    setContent("");
+    setContent('');
   };
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -67,8 +61,8 @@ export const Home: VFC = memo(() => {
     try {
       const res = await createPost(params);
       console.log(res);
-      setContent("");
-      history.push("/");
+      setContent('');
+      history.push('/');
     } catch (e) {
       console.log(e);
     }
@@ -86,238 +80,66 @@ export const Home: VFC = memo(() => {
         margin="auto"
       >
         <Flex justify="space-around" mx="40px" mb="24px">
-          <Image
-            width="64px"
-            height="64px"
-            src={HappyFace}
-            alt="HappyFace"
-            cursor="pointer"
-            onClick={handleHappy}
+          <EmotionFaceIcon
+            onClickFace={handleHappy}
+            EmotionFace={HappyFace}
+            EmotionAlt="HappyFace"
           />
-          <Image
-            width="64px"
-            height="64px"
-            src={AngerFace}
-            alt="AngerFace"
-            cursor="pointer"
-            onClick={handleAnger}
+          <EmotionFaceIcon
+            onClickFace={handleAnger}
+            EmotionFace={AngerFace}
+            EmotionAlt="AngerFace"
           />
-          <Image
-            width="64px"
-            height="64px"
-            src={SorrowFace}
-            alt="SorrowFace"
-            cursor="pointer"
-            onClick={handleSorrow}
+          <EmotionFaceIcon
+            onClickFace={handleSorrow}
+            EmotionFace={SorrowFace}
+            EmotionAlt="SorrowFace"
           />
-          <Image
-            width="64px"
-            height="64px"
-            src={FunFace}
-            alt="FunFace"
-            cursor="pointer"
-            onClick={handleFun}
+          <EmotionFaceIcon
+            onClickFace={handleFun}
+            EmotionFace={FunFace}
+            EmotionAlt="FunFace"
           />
         </Flex>
-        {emotion === "happy" && (
-          <Box
-            bgImage={HappyCard}
-            bgPosition="center"
-            bgSize="cover"
-            bgRepeat="no-repeat"
-            width="400px"
-            height="400px"
-          >
-            <Box textAlign="center" pt="150px">
-              <form>
-                <Input
-                  type="hidden"
-                  name="emotion"
-                  onChange={handleEmotionChange}
-                />
-                <Textarea
-                  resize="none"
-                  variant="unstyled"
-                  className="textarea note happy"
-                  width="60%"
-                  height="210px"
-                  onChange={handleContentChange}
-                  value={content}
-                ></Textarea>
-                <Flex justify="center" mt="56px">
-                  <HStack spacing="16px">
-                    <Button
-                      _hover={{ opacity: 0.8 }}
-                      bg="#47789F"
-                      color="white"
-                      width="80px"
-                      onClick={(e) => handleSubmit(e)}
-                    >
-                      投稿
-                    </Button>
-                    <Button
-                      border="3px solid #47789F"
-                      color="#47789F"
-                      width="80px"
-                      onClick={handleReset}
-                    >
-                      リセット
-                    </Button>
-                  </HStack>
-                </Flex>
-              </form>
-            </Box>
-          </Box>
+        {emotion === 'happy' && (
+          <PostCreateCard
+            EmotionCard={HappyCard}
+            handleEmotionChange={handleEmotionChange}
+            handleContentChange={handleContentChange}
+            content={content}
+            handleSubmit={handleSubmit}
+            handleReset={handleReset}
+          />
         )}
-        {emotion === "anger" && (
-          <Box
-            bgImage={AngerCard}
-            bgPosition="center"
-            bgSize="cover"
-            bgRepeat="no-repeat"
-            width="400px"
-            height="400px"
-          >
-            <Box textAlign="center" pt="150px">
-              <form>
-                <Input
-                  type="hidden"
-                  name="emotion"
-                  onChange={handleEmotionChange}
-                />
-                <Textarea
-                  resize="none"
-                  variant="unstyled"
-                  className="textarea note anger"
-                  width="60%"
-                  height="210px"
-                  onChange={handleContentChange}
-                  value={content}
-                ></Textarea>
-                <Flex justify="center" mt="56px">
-                  <HStack spacing="16px">
-                    <Button
-                      _hover={{ opacity: 0.8 }}
-                      bg="#47789F"
-                      color="white"
-                      width="80px"
-                      onClick={(e) => handleSubmit(e)}
-                    >
-                      投稿
-                    </Button>
-                    <Button
-                      border="3px solid #47789F"
-                      color="#47789F"
-                      width="80px"
-                      onClick={handleReset}
-                    >
-                      リセット
-                    </Button>
-                  </HStack>
-                </Flex>
-              </form>
-            </Box>
-          </Box>
+        {emotion === 'anger' && (
+          <PostCreateCard
+            EmotionCard={AngerCard}
+            handleEmotionChange={handleEmotionChange}
+            handleContentChange={handleContentChange}
+            content={content}
+            handleSubmit={handleSubmit}
+            handleReset={handleReset}
+          />
         )}
-        {emotion === "sorrow" && (
-          <Box
-            bgImage={SorrowCard}
-            bgPosition="center"
-            bgSize="cover"
-            bgRepeat="no-repeat"
-            width="400px"
-            height="400px"
-          >
-            <Box textAlign="center" pt="150px">
-              <form>
-                <Input
-                  type="hidden"
-                  name="emotion"
-                  onChange={handleEmotionChange}
-                />
-                <Textarea
-                  resize="none"
-                  variant="unstyled"
-                  className="textarea note sorrow"
-                  width="60%"
-                  height="210px"
-                  onChange={handleContentChange}
-                  value={content}
-                ></Textarea>
-                <Flex justify="center" mt="56px">
-                  <HStack spacing="16px">
-                    <Button
-                      _hover={{ opacity: 0.8 }}
-                      bg="#47789F"
-                      color="white"
-                      width="80px"
-                      onClick={(e) => handleSubmit(e)}
-                    >
-                      投稿
-                    </Button>
-                    <Button
-                      border="3px solid #47789F"
-                      color="#47789F"
-                      width="80px"
-                      onClick={handleReset}
-                    >
-                      リセット
-                    </Button>
-                  </HStack>
-                </Flex>
-              </form>
-            </Box>
-          </Box>
+        {emotion === 'sorrow' && (
+          <PostCreateCard
+            EmotionCard={SorrowCard}
+            handleEmotionChange={handleEmotionChange}
+            handleContentChange={handleContentChange}
+            content={content}
+            handleSubmit={handleSubmit}
+            handleReset={handleReset}
+          />
         )}
-        {emotion === "fun" && (
-          <Box
-            bgImage={FunCard}
-            bgPosition="center"
-            bgSize="cover"
-            bgRepeat="no-repeat"
-            width="400px"
-            height="400px"
-          >
-            <Box textAlign="center" pt="150px">
-              <form>
-                <Input
-                  type="hidden"
-                  name="emotion"
-                  onChange={handleEmotionChange}
-                />
-                <Textarea
-                  resize="none"
-                  variant="unstyled"
-                  className="textarea note fun"
-                  width="60%"
-                  height="210px"
-                  onChange={handleContentChange}
-                  value={content}
-                ></Textarea>
-                <Flex justify="center" mt="56px">
-                  <HStack spacing="16px">
-                    <Button
-                      _hover={{ opacity: 0.8 }}
-                      bg="#47789F"
-                      color="white"
-                      width="80px"
-                      onClick={(e) => handleSubmit(e)}
-                    >
-                      投稿
-                    </Button>
-                    <Button
-                      border="3px solid #47789F"
-                      color="#47789F"
-                      width="80px"
-                      onClick={handleReset}
-                    >
-                      リセット
-                    </Button>
-                  </HStack>
-                </Flex>
-              </form>
-            </Box>
-          </Box>
+        {emotion === 'fun' && (
+          <PostCreateCard
+            EmotionCard={FunCard}
+            handleEmotionChange={handleEmotionChange}
+            handleContentChange={handleContentChange}
+            content={content}
+            handleSubmit={handleSubmit}
+            handleReset={handleReset}
+          />
         )}
       </Box>
     </Box>

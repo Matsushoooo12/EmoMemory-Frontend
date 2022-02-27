@@ -1,45 +1,22 @@
-import {
-  Box,
-  Text,
-  Image,
-  Flex,
-  HStack,
-  Textarea,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  useDisclosure,
-  Button,
-  Input,
-  ModalCloseButton,
-} from "@chakra-ui/react";
-import dayjs from "dayjs";
-import React, { memo, useContext, useEffect, useState, VFC } from "react";
-import { Wrap, WrapItem } from "@chakra-ui/react";
-import "../../../App.css";
+import { Box, useDisclosure } from '@chakra-ui/react';
+import React, { memo, useEffect, useState, VFC } from 'react';
+import { Wrap } from '@chakra-ui/react';
+import '../../../App.css';
 
-import HappyFace from "../../../images/喜01.png";
-import HappyCard from "../../../images/喜付箋.png";
-import AngerFace from "../../../images/怒01.png";
-import AngerCard from "../../../images/怒付箋.png";
-import SorrowFace from "../../../images/哀01.png";
-import SorrowCard from "../../../images/哀付箋.png";
-import FunFace from "../../../images/楽01.png";
-import FunCard from "../../../images/楽付箋.png";
-import LikeButton from "../../../images/それなスタンプ.png";
-import { Post } from "../../../types/post";
+import LikeButton from '../../../images/それなスタンプ.png';
+import { Post } from '../../../types/post';
 import {
   deletePost,
   getAllPosts,
   getAPost,
   updatePost,
-} from "../../../api/post";
-import { AuthContext } from "../../../App";
-import { createLike, deleteLike } from "../../../api/like";
+} from '../../../api/post';
+import { createLike, deleteLike } from '../../../api/like';
+import { PostDetailModal } from '../../organisms/post/PostDetailModal';
+import { EmotionFaceIcons } from '../../molecules/EmotionFaceIcons';
+import { PostIndexWrap } from '../../organisms/post/PostIndexWrap';
 
 export const Index: VFC = memo(() => {
-  const { currentUser } = useContext<any>(AuthContext);
-
   // 投稿一覧
   const [posts, setPosts] = useState<Post[]>([]);
   const handleGetAllPosts = async () => {
@@ -110,9 +87,9 @@ export const Index: VFC = memo(() => {
 
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement>,
-    id: any,
-    content: any,
-    emotion: any
+    id: number,
+    content: string,
+    emotion: string
   ) => {
     e.preventDefault();
     const params = generateParams(content, emotion);
@@ -128,8 +105,8 @@ export const Index: VFC = memo(() => {
   };
 
   // 投稿削除
-  const handleDelete = async (id: any) => {
-    console.log("click", id);
+  const handleDelete = async (id: number) => {
+    console.log('click', id);
     try {
       const res = await deletePost(id);
       console.log(res.data);
@@ -141,801 +118,51 @@ export const Index: VFC = memo(() => {
   };
 
   // カード絞り込み
-  const [emotion, setEmotion] = useState("");
-  const onClickAll = () => {
-    setEmotion("");
-  };
+  const [emotion, setEmotion] = useState('');
 
-  const onClickHappy = () => {
-    setEmotion("happy");
-  };
-
-  const onClickAnger = () => {
-    setEmotion("anger");
-  };
-
-  const onClickSorrow = () => {
-    setEmotion("sorrow");
-  };
-
-  const onClickFun = () => {
-    setEmotion("fun");
-  };
-
-  const cardColor = (emotion: string) => {
-    if (emotion === "happy") {
-      return "#FFF7D4";
-    } else if (emotion === "anger") {
-      return "#FFD6D7";
-    } else if (emotion === "sorrow") {
-      return "#DCE3FF";
-    } else if (emotion === "fun") {
-      return "#E2FFEB";
-    }
-  };
-
-  const cardBorderColor = (emotion: string, userId: number) => {
-    if (currentUser.id === userId) {
-      if (emotion === "happy") {
-        return "3px solid yellow";
-      } else if (emotion === "anger") {
-        return "3px solid red";
-      } else if (emotion === "sorrow") {
-        return "3px solid blue";
-      } else if (emotion === "fun") {
-        return "3px solid green";
-      }
-    } else {
-      return "none";
-    }
-  };
-
-  const textareaColor = (emotion: string) => {
-    if (emotion === "happy") {
-      return "textarea note happy index";
-    } else if (emotion === "anger") {
-      return "textarea note anger index";
-    } else if (emotion === "sorrow") {
-      return "textarea note sorrow index";
-    } else if (emotion === "fun") {
-      return "textarea note fun index";
-    }
-  };
   return (
     <Box py="80px" width="100%" height="100%" minHeight="100vh">
       <Box width="80%" mx="auto" mt="80px">
         <Box
-          width="500px"
+          px={{ base: '20px', md: '80px' }}
           position="fixed"
           right="0"
           left="0"
           margin="auto"
           zIndex="50"
         >
-          <Flex justify="center" mx="40px" mb="40px">
-            <HStack spacing="24px">
-              <Flex
-                bg="red"
-                color="white"
-                width="44px"
-                height="44px"
-                borderRadius="50%"
-                mt="12px"
-                mb="2px"
-                mr="12px"
-                border="3px solid yellow"
-                justify="center"
-                align="center"
-                fontWeight="bold"
-                onClick={onClickAll}
-                cursor="pointer"
-              >
-                All
-              </Flex>
-              <Image
-                width="64px"
-                height="64px"
-                src={HappyFace}
-                alt="HappyFace"
-                cursor="pointer"
-                onClick={onClickHappy}
+          <EmotionFaceIcons setEmotion={setEmotion} mt="0" />
+
+          <Wrap spacing="40px" justify="center">
+            {posts.map((post) => (
+              <PostIndexWrap
+                emotion={emotion}
+                onClickModalPost={() => onClickModalPost(post.id)}
+                LikeButton={LikeButton}
+                handleDeleteLike={() => handleDeleteLike(post.id)}
+                handleCreateLike={() => handleCreateLike(post.id)}
+                key={post.id}
+                post={post}
               />
-              <Image
-                width="64px"
-                height="64px"
-                src={AngerFace}
-                alt="AngerFace"
-                cursor="pointer"
-                onClick={onClickAnger}
-              />
-              <Image
-                width="64px"
-                height="64px"
-                src={SorrowFace}
-                alt="SorrowFace"
-                cursor="pointer"
-                onClick={onClickSorrow}
-              />
-              <Image
-                width="64px"
-                height="64px"
-                src={FunFace}
-                alt="FunFace"
-                cursor="pointer"
-                onClick={onClickFun}
-              />
-            </HStack>
-          </Flex>
+            ))}
+          </Wrap>
         </Box>
-        <Wrap spacing="40px" pt="100px">
-          {posts.map((post) => (
-            <React.Fragment key={post.id}>
-              {post.emotion === emotion && (
-                <WrapItem
-                  width="200px"
-                  height="200px"
-                  bg={cardColor(post.emotion)}
-                  border={cardBorderColor(post.emotion, post.user.id)}
-                  borderRadius="md"
-                  justifyContent="center"
-                  cursor="pointer"
-                >
-                  <Box textAlign="center">
-                    <Textarea
-                      cursor="pointer"
-                      isReadOnly
-                      mt="24px"
-                      resize="none"
-                      variant="unstyled"
-                      className={textareaColor(post.emotion)}
-                      width="100%"
-                      height="140px"
-                      fontSize="12px"
-                      defaultValue={post.content}
-                      onClick={() => onClickModalPost(post.id)}
-                    ></Textarea>
-                    <Flex justify="space-between" align="center">
-                      <Text fontSize="12px">
-                        {dayjs(post.createdAt).format("YYYY/MM/DD")}
-                      </Text>
-                      <Flex align="center">
-                        <HStack spacing={1}>
-                          {post.likes?.find(
-                            (like) => like.userId === currentUser.id
-                          ) ? (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              onClick={() => handleDeleteLike(post.id)}
-                            />
-                          ) : (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              opacity={0.3}
-                              onClick={() => handleCreateLike(post.id)}
-                            />
-                          )}
-                          <Text fontSize="12px">{post.likes.length}</Text>
-                        </HStack>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </WrapItem>
-              )}
-              {emotion === "" && (
-                <WrapItem
-                  width="200px"
-                  height="200px"
-                  bg={cardColor(post.emotion)}
-                  border={cardBorderColor(post.emotion, post.user.id)}
-                  borderRadius="md"
-                  justifyContent="center"
-                  cursor="pointer"
-                >
-                  <Box textAlign="center">
-                    <Textarea
-                      cursor="pointer"
-                      isReadOnly
-                      mt="24px"
-                      resize="none"
-                      variant="unstyled"
-                      className={textareaColor(post.emotion)}
-                      width="100%"
-                      height="140px"
-                      fontSize="12px"
-                      defaultValue={post.content}
-                      onClick={() => onClickModalPost(post.id)}
-                    ></Textarea>
-                    <Flex justify="space-between" align="center">
-                      <Text fontSize="12px">
-                        {dayjs(post.createdAt).format("YYYY/MM/DD")}
-                      </Text>
-                      <Flex align="center">
-                        <HStack spacing={1}>
-                          {post.likes?.find(
-                            (like) => like.userId === currentUser.id
-                          ) ? (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              onClick={() => handleDeleteLike(post.id)}
-                            />
-                          ) : (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              opacity={0.3}
-                              onClick={() => handleCreateLike(post.id)}
-                            />
-                          )}
-                          <Text fontSize="12px">{post.likes.length}</Text>
-                        </HStack>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </WrapItem>
-              )}
-            </React.Fragment>
-          ))}
-        </Wrap>
       </Box>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent bg="none" border="none" shadow="none">
-          <ModalCloseButton mr="64px" mt="100px" />
-          {currentUser.id === post?.user.id ? (
-            <form>
-              {post?.emotion === "happy" && (
-                <Box
-                  bgImage={HappyCard}
-                  bgPosition="center"
-                  bgSize="cover"
-                  bgRepeat="no-repeat"
-                  width="400px"
-                  height="400px"
-                  cursor="pointer"
-                >
-                  <Box textAlign="center" pt="150px">
-                    <Input
-                      type="hidden"
-                      name="emotion"
-                      onChange={(e) =>
-                        setPost({ ...post, emotion: e.target.value })
-                      }
-                    />
-                    <Textarea
-                      resize="none"
-                      variant="unstyled"
-                      className="textarea note happy"
-                      width="60%"
-                      height="200px"
-                      onChange={(e) =>
-                        setPost({ ...post, content: e.target.value })
-                      }
-                      value={post?.content}
-                      name="content"
-                    ></Textarea>
-                    <Flex
-                      justify="space-between"
-                      align="center"
-                      width="100%"
-                      px="80px"
-                    >
-                      <Text fontSize="14px">
-                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
-                      </Text>
-                      <Flex align="center">
-                        <HStack spacing={1}>
-                          {post.likes?.find(
-                            (like) => like.userId === currentUser.id
-                          ) ? (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              onClick={() => handleDeleteLike(post.id)}
-                            />
-                          ) : (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              opacity={0.3}
-                              onClick={() => handleCreateLike(post.id)}
-                            />
-                          )}
-                          <Text fontSize="14px">{post?.likes.length}</Text>
-                        </HStack>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </Box>
-              )}
-              {post?.emotion === "anger" && (
-                <Box
-                  bgImage={AngerCard}
-                  bgPosition="center"
-                  bgSize="cover"
-                  bgRepeat="no-repeat"
-                  width="400px"
-                  height="400px"
-                  cursor="pointer"
-                >
-                  <Box textAlign="center" pt="150px">
-                    <Input
-                      type="hidden"
-                      name="emotion"
-                      onChange={(e) =>
-                        setPost({ ...post, emotion: e.target.value })
-                      }
-                    />
-                    <Textarea
-                      resize="none"
-                      variant="unstyled"
-                      className="textarea note anger"
-                      width="60%"
-                      height="200px"
-                      onChange={(e) =>
-                        setPost({ ...post, content: e.target.value })
-                      }
-                      value={post?.content}
-                      name="content"
-                    ></Textarea>
-                    <Flex
-                      justify="space-between"
-                      align="center"
-                      width="100%"
-                      px="80px"
-                    >
-                      <Text fontSize="14px">
-                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
-                      </Text>
-                      <Flex align="center">
-                        <HStack spacing={1}>
-                          {post.likes?.find(
-                            (like) => like.userId === currentUser.id
-                          ) ? (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              onClick={() => handleDeleteLike(post.id)}
-                            />
-                          ) : (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              opacity={0.3}
-                              onClick={() => handleCreateLike(post.id)}
-                            />
-                          )}
-                          <Text fontSize="14px">{post?.likes.length}</Text>
-                        </HStack>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </Box>
-              )}
-              {post?.emotion === "sorrow" && (
-                <Box
-                  bgImage={SorrowCard}
-                  bgPosition="center"
-                  bgSize="cover"
-                  bgRepeat="no-repeat"
-                  width="400px"
-                  height="400px"
-                  cursor="pointer"
-                >
-                  <Box textAlign="center" pt="150px">
-                    <Input
-                      type="hidden"
-                      name="emotion"
-                      onChange={(e) =>
-                        setPost({ ...post, emotion: e.target.value })
-                      }
-                    />
-                    <Textarea
-                      resize="none"
-                      variant="unstyled"
-                      className="textarea note sorrow"
-                      width="60%"
-                      height="200px"
-                      onChange={(e) =>
-                        setPost({ ...post, content: e.target.value })
-                      }
-                      value={post?.content}
-                      name="content"
-                    ></Textarea>
-                    <Flex
-                      justify="space-between"
-                      align="center"
-                      width="100%"
-                      px="80px"
-                    >
-                      <Text fontSize="14px">
-                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
-                      </Text>
-                      <Flex align="center">
-                        <HStack spacing={1}>
-                          {post.likes?.find(
-                            (like) => like.userId === currentUser.id
-                          ) ? (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              onClick={() => handleDeleteLike(post.id)}
-                            />
-                          ) : (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              opacity={0.3}
-                              onClick={() => handleCreateLike(post.id)}
-                            />
-                          )}
-                          <Text fontSize="14px">{post?.likes.length}</Text>
-                        </HStack>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </Box>
-              )}
-              {post?.emotion === "fun" && (
-                <Box
-                  bgImage={FunCard}
-                  bgPosition="center"
-                  bgSize="cover"
-                  bgRepeat="no-repeat"
-                  width="400px"
-                  height="400px"
-                  cursor="pointer"
-                >
-                  <Box textAlign="center" pt="150px">
-                    <Input
-                      type="hidden"
-                      name="emotion"
-                      onChange={(e) =>
-                        setPost({ ...post, emotion: e.target.value })
-                      }
-                    />
-                    <Textarea
-                      resize="none"
-                      variant="unstyled"
-                      className="textarea note fun"
-                      width="60%"
-                      height="200px"
-                      onChange={(e) =>
-                        setPost({ ...post, content: e.target.value })
-                      }
-                      value={post?.content}
-                      name="content"
-                    ></Textarea>
-                    <Flex
-                      justify="space-between"
-                      align="center"
-                      width="100%"
-                      px="80px"
-                    >
-                      <Text fontSize="14px">
-                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
-                      </Text>
-                      <Flex align="center">
-                        <HStack spacing={1}>
-                          {post.likes?.find(
-                            (like) => like.userId === currentUser.id
-                          ) ? (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              onClick={() => handleDeleteLike(post.id)}
-                            />
-                          ) : (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              opacity={0.3}
-                              onClick={() => handleCreateLike(post.id)}
-                            />
-                          )}
-                          <Text fontSize="14px">{post?.likes.length}</Text>
-                        </HStack>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </Box>
-              )}
-              <Flex justify="center" mt="16px">
-                <HStack spacing="16px">
-                  <Button
-                    _hover={{ opacity: 0.8 }}
-                    bg="#47789F"
-                    color="white"
-                    width="80px"
-                    onClick={(e) =>
-                      handleSubmit(e, post?.id, post?.content, post?.emotion)
-                    }
-                  >
-                    編集
-                  </Button>
-                  <Button
-                    border="3px solid #47789F"
-                    color="#47789F"
-                    width="80px"
-                    onClick={() => handleDelete(post?.id)}
-                  >
-                    削除
-                  </Button>
-                </HStack>
-              </Flex>
-            </form>
-          ) : (
-            <>
-              {post?.emotion === "happy" && (
-                <Box
-                  bgImage={HappyCard}
-                  bgPosition="center"
-                  bgSize="cover"
-                  bgRepeat="no-repeat"
-                  width="400px"
-                  height="400px"
-                  cursor="pointer"
-                >
-                  <Box textAlign="center" pt="150px">
-                    <Textarea
-                      onClick={onClose}
-                      cursor="pointer"
-                      resize="none"
-                      variant="unstyled"
-                      className="textarea note happy"
-                      width="60%"
-                      height="200px"
-                      readOnly
-                      defaultValue={post?.content}
-                    ></Textarea>
-                    <Flex
-                      justify="space-between"
-                      align="center"
-                      width="100%"
-                      px="80px"
-                    >
-                      <Text fontSize="14px">
-                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
-                      </Text>
-                      <Flex align="center">
-                        <HStack spacing={1}>
-                          {post.likes?.find(
-                            (like) => like.userId === currentUser.id
-                          ) ? (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              onClick={() => handleDeleteLike(post.id)}
-                            />
-                          ) : (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              opacity={0.3}
-                              onClick={() => handleCreateLike(post.id)}
-                            />
-                          )}
-                          <Text fontSize="14px">{post?.likes.length}</Text>
-                        </HStack>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </Box>
-              )}
-              {post?.emotion === "anger" && (
-                <Box
-                  bgImage={AngerCard}
-                  bgPosition="center"
-                  bgSize="cover"
-                  bgRepeat="no-repeat"
-                  width="400px"
-                  height="400px"
-                  cursor="pointer"
-                >
-                  <Box textAlign="center" pt="150px">
-                    <Textarea
-                      onClick={onClose}
-                      cursor="pointer"
-                      resize="none"
-                      variant="unstyled"
-                      className="textarea note anger"
-                      width="60%"
-                      height="200px"
-                      readOnly
-                      defaultValue={post?.content}
-                    ></Textarea>
-                    <Flex
-                      justify="space-between"
-                      align="center"
-                      width="100%"
-                      px="80px"
-                    >
-                      <Text fontSize="14px">
-                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
-                      </Text>
-                      <Flex align="center">
-                        <HStack spacing={1}>
-                          {post.likes?.find(
-                            (like) => like.userId === currentUser.id
-                          ) ? (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              onClick={() => handleDeleteLike(post.id)}
-                            />
-                          ) : (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              opacity={0.3}
-                              onClick={() => handleCreateLike(post.id)}
-                            />
-                          )}
-                          <Text fontSize="14px">{post?.likes.length}</Text>
-                        </HStack>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </Box>
-              )}
-              {post?.emotion === "sorrow" && (
-                <Box
-                  bgImage={SorrowCard}
-                  bgPosition="center"
-                  bgSize="cover"
-                  bgRepeat="no-repeat"
-                  width="400px"
-                  height="400px"
-                  cursor="pointer"
-                >
-                  <Box textAlign="center" pt="150px">
-                    <Textarea
-                      onClick={onClose}
-                      cursor="pointer"
-                      resize="none"
-                      variant="unstyled"
-                      className="textarea note sorrow"
-                      width="60%"
-                      height="200px"
-                      readOnly
-                      defaultValue={post?.content}
-                    ></Textarea>
-                    <Flex
-                      justify="space-between"
-                      align="center"
-                      width="100%"
-                      px="80px"
-                    >
-                      <Text fontSize="14px">
-                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
-                      </Text>
-                      <Flex align="center">
-                        <HStack spacing={1}>
-                          {post.likes?.find(
-                            (like) => like.userId === currentUser.id
-                          ) ? (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              onClick={() => handleDeleteLike(post.id)}
-                            />
-                          ) : (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              opacity={0.3}
-                              onClick={() => handleCreateLike(post.id)}
-                            />
-                          )}
-                          <Text fontSize="14px">{post?.likes.length}</Text>
-                        </HStack>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </Box>
-              )}
-              {post?.emotion === "fun" && (
-                <Box
-                  bgImage={FunCard}
-                  bgPosition="center"
-                  bgSize="cover"
-                  bgRepeat="no-repeat"
-                  width="400px"
-                  height="400px"
-                  cursor="pointer"
-                >
-                  <Box textAlign="center" pt="150px">
-                    <Textarea
-                      onClick={onClose}
-                      cursor="pointer"
-                      resize="none"
-                      variant="unstyled"
-                      className="textarea note fun"
-                      width="60%"
-                      height="200px"
-                      readOnly
-                      defaultValue={post?.content}
-                    ></Textarea>
-                    <Flex
-                      justify="space-between"
-                      align="center"
-                      width="100%"
-                      px="80px"
-                    >
-                      <Text fontSize="14px">
-                        {dayjs(post?.createdAt).format("YYYY/MM/DD")}
-                      </Text>
-                      <Flex align="center">
-                        <HStack spacing={1}>
-                          {post.likes?.find(
-                            (like) => like.userId === currentUser.id
-                          ) ? (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              onClick={() => handleDeleteLike(post.id)}
-                            />
-                          ) : (
-                            <Image
-                              src={LikeButton}
-                              alt="LikeButton"
-                              width="24px"
-                              height="24px"
-                              opacity={0.3}
-                              onClick={() => handleCreateLike(post.id)}
-                            />
-                          )}
-                          <Text fontSize="14px">{post?.likes.length}</Text>
-                        </HStack>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </Box>
-              )}
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      {post && (
+        <PostDetailModal
+          isOpen={isOpen}
+          onClose={onClose}
+          LikeButton={LikeButton}
+          post={post}
+          setPost={setPost}
+          handleSubmit={handleSubmit}
+          handleDelete={handleDelete}
+          handleGetDetailPost={handleGetDetailPost}
+          handleGetAllPosts={handleGetAllPosts}
+          handleDeleteLike={handleDeleteLike}
+          handleCreateLike={handleCreateLike}
+        />
+      )}
     </Box>
   );
 });

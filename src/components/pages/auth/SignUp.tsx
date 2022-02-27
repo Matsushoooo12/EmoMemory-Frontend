@@ -1,4 +1,4 @@
-import { memo, useCallback, useContext, useState, VFC } from "react";
+import { memo, useCallback, useContext, useState, VFC } from 'react';
 import {
   Box,
   Heading,
@@ -7,41 +7,44 @@ import {
   Stack,
   Link,
   InputGroup,
-  Button,
   HStack,
   Input,
   Text,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import HappyFace from "../../../images/喜01.png";
-import AngerFace from "../../../images/怒01.png";
-import SorrowFace from "../../../images/哀01.png";
-import FunFace from "../../../images/楽01.png";
-import { useHistory } from "react-router-dom";
-import { signUp } from "../../../api/auth";
-import { AuthContext } from "../../../App";
-import Cookies from "js-cookie";
+import HappyFace from '../../../images/喜01.png';
+import AngerFace from '../../../images/怒01.png';
+import SorrowFace from '../../../images/哀01.png';
+import FunFace from '../../../images/楽01.png';
+import { useHistory } from 'react-router-dom';
+import { signUp } from '../../../api/auth';
+import { AuthContext } from '../../../App';
+import Cookies from 'js-cookie';
+import { SubmitButton } from '../../atoms/button/SubmitButton';
+import { ResetButton } from '../../atoms/button/ResetButton';
+import { PrimaryInput } from '../../atoms/form/PrimaryInput';
 
 export const SignUp: VFC = memo(() => {
   const history = useHistory();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { setIsSignedIn, setCurrentUser } = useContext<any>(AuthContext);
   const onClickSignIn = useCallback(() => {
-    history.push("/signin");
+    history.push('/signin');
   }, [history]);
   const [value, setValue] = useState({
-    name: "",
-    emotion: "happy",
-    email: "",
-    password: "",
-    passwordConfirmation: "",
+    name: '',
+    emotion: 'happy',
+    email: '',
+    password: '',
+    passwordConfirmation: '',
   });
   const handleReset = () => [
     setValue({
-      name: "",
-      emotion: "happy",
-      email: "",
-      password: "",
-      passwordConfirmation: "",
+      name: '',
+      emotion: 'happy',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
     }),
   ];
 
@@ -56,14 +59,14 @@ export const SignUp: VFC = memo(() => {
     try {
       const res = await signUp(value);
       if (res.status === 200) {
-        Cookies.set("_access_token", res.headers["access-token"]);
-        Cookies.set("_client", res.headers["client"]);
-        Cookies.set("_uid", res.headers["uid"]);
+        Cookies.set('_access_token', res.headers['access-token']);
+        Cookies.set('_client', res.headers['client']);
+        Cookies.set('_uid', res.headers['uid']);
 
         setIsSignedIn(true);
         setCurrentUser(res.data.data);
 
-        history.push("/");
+        history.push('/');
       }
     } catch (e) {
       console.log(e);
@@ -118,23 +121,19 @@ export const SignUp: VFC = memo(() => {
           <form>
             <InputGroup display="block" position="relative">
               <Stack spacing="40px">
-                <Input
+                <PrimaryInput
                   placeholder="名前"
                   value={value.name}
                   onChange={(e) => handleChange(e)}
-                  type="text"
+                  type="name"
                   name="name"
-                  variant="flushed"
-                  focusBorderColor="#47789F"
                 />
-                <Input
+                <PrimaryInput
                   placeholder="メールアドレス"
                   value={value.email}
                   onChange={(e) => handleChange(e)}
                   type="email"
                   name="email"
-                  variant="flushed"
-                  focusBorderColor="#47789F"
                 />
                 <Input
                   placeholder="パスワード"
@@ -145,14 +144,19 @@ export const SignUp: VFC = memo(() => {
                   variant="flushed"
                   focusBorderColor="#47789F"
                 />
-                <Input
+                <PrimaryInput
+                  placeholder="パスワード"
+                  value={value.password}
+                  onChange={(e) => handleChange(e)}
+                  type="password"
+                  name="password"
+                />
+                <PrimaryInput
                   placeholder="パスワード確認"
                   value={value.passwordConfirmation}
                   onChange={(e) => handleChange(e)}
                   type="password"
                   name="passwordConfirmation"
-                  variant="flushed"
-                  focusBorderColor="#47789F"
                 />
                 <Input
                   type="hidden"
@@ -160,27 +164,25 @@ export const SignUp: VFC = memo(() => {
                   onChange={(e) => handleChange(e)}
                   value={value.emotion}
                 />
+                <PrimaryInput
+                  placeholder=""
+                  value={value.emotion}
+                  onChange={(e) => handleChange(e)}
+                  type="text"
+                  name="emotion"
+                />
                 <Text fontSize="12px">
                   新規登録すると、利用規約および プライバシーポリシーに
                   同意したとみなされます。
                 </Text>
                 <Flex justify="center">
                   <HStack spacing="32px">
-                    <Button
-                      bg="#47789F"
-                      color="white"
-                      _hover={{ opacity: 0.8 }}
-                      onClick={(e) => handleSubmit(e)}
-                    >
+                    <SubmitButton handleSubmit={handleSubmit} width="80px">
                       新規登録
-                    </Button>
-                    <Button
-                      border="3px solid #47789F"
-                      color="#47789F"
-                      onClick={handleReset}
-                    >
+                    </SubmitButton>
+                    <ResetButton handleReset={handleReset} width="80px">
                       リセット
-                    </Button>
+                    </ResetButton>
                   </HStack>
                 </Flex>
               </Stack>
