@@ -120,7 +120,7 @@ export const SignUp: VFC = memo(() => {
           </Heading>
           <form>
             <InputGroup display="block" position="relative">
-              <Stack spacing="40px">
+              <Stack spacing="28px">
                 <PrimaryInput
                   placeholder="名前"
                   value={value.name}
@@ -168,7 +168,7 @@ export const SignUp: VFC = memo(() => {
                   placeholder=""
                   value={value.emotion}
                   onChange={(e) => handleChange(e)}
-                  type="text"
+                  type="hidden"
                   name="emotion"
                 />
                 <Text fontSize="12px">
